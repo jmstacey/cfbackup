@@ -29,11 +29,16 @@ class CFBackup
   def initialize(args)
     @opts = OptCFBackup.new(args)
 
+    # Special case if the version is requested
+    if @opts.options.show_ver
+      showError('CFBackup v0.1 [9d584cd5]')
+    end
+    
     unless (FileTest.exists?(@opts.options.config))
       showError('Error: Unable to locate config file')
     end
       
-    @conf = YAML::load(File.open(self.opts.options.config))
+    @conf = YAML::load(File.open(@opts.options.config))
   end # initialize()
   
   def run

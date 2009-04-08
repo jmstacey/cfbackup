@@ -15,9 +15,10 @@ class OptCFBackup
     @banner = "Usage: cfbackup.rb [options] --local_path PATH --container CONTAINER"
     
     @options = OpenStruct.new
+    self.options.show_ver  = false
     self.options.recursive = false
     self.options.restore   = false
-    self.options.slicehost = false
+    self.options.unmetered = false
     self.options.path      = ''
     self.options.container = ''
     self.options.config    = 'cfconfig.yml'
@@ -46,12 +47,16 @@ class OptCFBackup
         self.options.restore = restore
       end
       
-      opts.on("--config_file", "Use specified config file, rather than the default") do |config|
+      opts.on("--version", "Show current version") do |version|
+        self.options.show_ver = version
+      end
+      
+      opts.on("--config_file PATH", "Use specified config file, rather than the default") do |config|
         self.options.config = config
       end
       
-      opts.on("--slicehost", "Use unmetered connection in DFW (only usefult to Slicehost customers)") do |slicehsot|
-        self.options.slicehost = slicehost
+      opts.on("--slicehost", "Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)") do |unmetered|
+        self.options.unmetered = unmetered
       end
       
     end
