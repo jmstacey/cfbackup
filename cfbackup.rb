@@ -31,7 +31,7 @@ class CFBackup
 
     # Special case if the version is requested
     if @opts.options.show_ver
-      showError('CFBackup v0.1 [9d584cd5]')
+      showError('CFBackup v0.2 [4071852e]')
     end
     
     unless (FileTest.exists?(@opts.options.config))
