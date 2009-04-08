@@ -1,0 +1,5 @@
+You could use this as a temporary
+hodling directory in combination with
+the example_backup.sh script
+
+This file exists so that git doesn't delete this directory
