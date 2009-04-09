@@ -83,7 +83,7 @@ class CFBackup
     if FileTest::file?(path)
       Dir.chdir(File::dirname(path))
       globOptions = File.join(File::basename(path))
-    elsif recursive
+    elsif @opts.options.recursive
       Dir.chdir(path)
       globOptions = File.join("**", "*")
     else
