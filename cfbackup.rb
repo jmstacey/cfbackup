@@ -62,7 +62,7 @@ class CFBackup
     
     # Special option for Slicehost customers in DFW datacenter
     if @opts.options.slicehost
-      self.cf.storagehost = 'snet-storage.clouddrive.com'
+      @cf.storagehost = 'snet-storage.clouddrive.com'
     end
     
     # Check for the container. If it doesn't exist, create it.
