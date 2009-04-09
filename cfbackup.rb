@@ -123,6 +123,8 @@ class CFBackup
       else
         print message
       end
+      
+      $stdout.flush
     end
     
   end # showVerbose()
