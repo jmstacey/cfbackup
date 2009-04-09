@@ -25,7 +25,7 @@ class CFBackup
 
     # Special case if the version is requested
     if @opts.options.show_ver
-      showError('CFBackup v0.2 [4071852e]')
+      showError('CFBackup v0.3 [027b2a5c]')
     end
     
     unless (FileTest.exists?(@opts.options.config))
@@ -111,6 +111,7 @@ class CFBackup
     
     # TODO: Implement runRestore
     # We have to do a bit of fancy footwork to make directories work
+    puts "Oops! Restore hasn't been implemented yet. Help me out and submit a patch :-)"
     
   end # runRestore()
   
