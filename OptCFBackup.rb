@@ -18,7 +18,7 @@ class OptCFBackup
     self.options.show_ver  = false
     self.options.recursive = false
     self.options.restore   = false
-    self.options.unmetered = false
+    self.options.local_net = false
     self.options.path      = ''
     self.options.container = ''
     self.options.config    = 'cfconfig.yml'
@@ -55,8 +55,8 @@ class OptCFBackup
         self.options.config = config
       end
       
-      opts.on("--slicehost", "Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)") do |unmetered|
-        self.options.unmetered = unmetered
+      opts.on("--local_net", "Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)") do |local_net|
+        self.options.local_net = local_net
       end
       
     end
