@@ -82,6 +82,7 @@ class CFBackup
   end # prepConnection()
   
   def run_piped_data
+    puts "Warning: 5GB per stream cap"
     object = @container.create_object(@opts.options.remote_path, true)
     object.write("STDIN")
   end
