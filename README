@@ -1,11 +1,12 @@
 ---------------------------------
 CFBackup
 ---------------------------------
-Project page: http://jonsview.com/projects/cfbackup
-
 CFBackup is a small ruby program that transfers files or directories
 from the local machine to a Cloud Files container. It is meant to serve
 as a useful tool for automated backups. 
+
+Project page: http://jonsview.com/projects/cfbackup
+Repository	: http://github.com/jmstacey/cfbackup
 
 ---------------------------------
 A Warning
