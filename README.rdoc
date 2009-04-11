@@ -1,0 +1,48 @@
+= CFBackup
+
+http://wiki.github.com/jmstacey/cfbackup
+
+== Description
+
+CFBackup is a small ruby program that transfers files or directories
+from the local machine to a Cloud Files container. It is meant to serve
+as a useful tool for automated backups.
+
+== Features
+
+* Backup a single file or directory
+	* Optional recursion using pseudo directories
+	* Pipe data straight to container
+	* Free transfers over local Rackspace network for Slicehost/Cloud Server customers in DFW1 datacenter
+	
+== Requirements
+
+* mime-types
+* archive-tar-minitar
+* nokogiri
+* hoe
+* rcov
+
+== Install
+
+sudo gem install mime-types archive-tar-minitar nokogiri hoe rcov
+
+git clone git://github.com/jmstacey/cfbackup.git cfbackup
+
+== License
+
+CFBackup, a small utility script to backup files to Mosso Cloud Files
+    Copyright (C) 2009  Jon Stacey
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
