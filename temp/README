@@ -1,4 +1,5 @@
 You could use this as a temporary holding directory 
-in combination with the example_backup.sh script.
+in combination with the temp_directory.sh script
+example in the example_scripts directory.
 
 This file exists so that git doesn't delete this directory.
