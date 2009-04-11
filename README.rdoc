@@ -12,8 +12,8 @@ as a useful tool for automated backups.
 
 * Backup a single file or directory
 	* Optional recursion using pseudo directories
-	* Pipe data straight to container
-	* Free transfers over local Rackspace network for Slicehost/Cloud Server customers in DFW1 datacenter
+* Pipe data straight to container
+* Free transfers over local Rackspace network for Slicehost/Cloud Server customers in DFW1 datacenter
 	
 == Requirements
 
