@@ -1,9 +1,11 @@
 #!/bin/sh
 
-# Rename this file to cfbackup (no extension) if you are going to place in /etc/cron.daily
+# This is an example script that you could use in combination with CFBackup.
+# Modify it to suit your needs. Rename to "cfbackup" (without an extension)
+# if you are going to place in /etc/cron.daily.
 
 cd ~/cfbackup/temp
-CONTAINER=jonsview_swift_backups
+CONTAINER=backups
 NOW=$(date +_%b_%d_%y)
 
 # Dump all MySQL databases
