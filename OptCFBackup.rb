@@ -15,6 +15,7 @@ class OptCFBackup
     @banner = "Usage: cfbackup.rb [options] --local_path PATH --container CONTAINER"
     
     @options = OpenStruct.new
+    self.options.pipe_data = false
     self.options.show_ver  = false
     self.options.recursive = false
     self.options.restore   = false
@@ -26,6 +27,10 @@ class OptCFBackup
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
+      
+      opts.on("--pipe_data", "Pipe data from another application and stream it to Cloud Files") do |pipe|
+        self.options.pipe_data = pipe
+      end
       
       opts.on("-r", "--recursive", "Traverse local path recursivley") do |recursive|
         self.options.recursive = recursive

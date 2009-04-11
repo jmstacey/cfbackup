@@ -210,21 +210,34 @@ module CloudFiles
 
     # This method actually makes the HTTP calls out to the server
     def cfreq(method,server,path,headers = {},data = nil,attempts = 0,&block) # :nodoc:
+      if data == "STDIN" # Hack (see next comment)
+        headers['Transfer-Encoding'] = "chunked"
+      end     
+
       start = Time.now
       hdrhash = headerprep(headers)
       path = URI.escape(path)
       start_http(server,path,hdrhash)
       request = Net::HTTP.const_get(method.to_s.capitalize).new(path,hdrhash)
+      
+      # Hacked by Jon Stacey to enable piped data to be streamed
       if data
-        if data.respond_to?(:read)
+        if data == "STDIN"
+          request.body_stream = $stdin
+        elsif data.respond_to?(:read)
           request.body_stream = data
         else
           request.body = data
         end
-        request.content_length = data.respond_to?(:lstat) ? data.stat.size : data.size
+        
+        unless data == "STDIN"              
+          request.content_length = data.respond_to?(:lstat) ? data.stat.size : data.size
+        end
+        
       else
         request.content_length = 0
-      end
+      end # if data
+      
       response = @http[server].request(request,&block)
       raise ExpiredAuthTokenException if response.code == "401"
       response
@@ -260,6 +273,7 @@ module CloudFiles
           @http[server] = Net::HTTP.new(server,443)
           @http[server].use_ssl = true
           @http[server].verify_mode = OpenSSL::SSL::VERIFY_NONE
+          @http[server].set_debug_output $stderr
           @http[server].start
         rescue
           raise ConnectionException, "Unable to connect to #{server}"

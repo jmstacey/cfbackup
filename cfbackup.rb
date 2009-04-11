@@ -37,16 +37,21 @@ class CFBackup
   
   def run
     
-    if @opts.options.path == "" || @opts.options.container == ""
-      showError()
-    end
-
-    prepContainer
+    showError() unless (@opts.options.container != "")
     
-    if @opts.options.restore
-      runRestore
+    if @opts.options.pipe_data
+      prepContainer
+      run_piped_data
+    elsif @opts.options.path != ""
+      prepContainer
+      
+      if @opts.options.restore
+        runRestore
+      else
+        runBackup
+      end
     else
-      runBackup
+      showError()
     end
     
   end # run()
@@ -75,6 +80,11 @@ class CFBackup
     @container = @cf.container(@opts.options.container)
     
   end # prepConnection()
+  
+  def run_piped_data
+    object = @container.create_object('test.txt', true)
+    object.write($stdin)
+  end
   
   def runBackup
     
@@ -136,6 +146,10 @@ class CFBackup
     puts @opts.banner
     exit
   end # showError()
+  
+  def parse_container_path(container)
+    # Split based on :
+  end # parse_container_path()
   
 end # class CFBackup
 
