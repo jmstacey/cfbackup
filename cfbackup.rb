@@ -25,11 +25,11 @@ class CFBackup
 
     # Special case if the version is requested
     if @opts.options.show_ver
-      showError('CFBackup v0.4')
+      show_error('CFBackup v0.4')
     end
     
     unless (FileTest.exists?(@opts.options.config))
-      showError('Error: Unable to locate config file')
+      show_error('Error: Unable to locate config file')
     end
       
     @conf = YAML::load(File.open(@opts.options.config))
@@ -37,33 +37,33 @@ class CFBackup
   
   def run
     
-    showError() unless (@opts.options.container != "")
+    show_error() unless (@opts.options.container != "")
     
     if @opts.options.pipe_data
-      prepContainer
+      prep_container
       run_piped_data
     elsif @opts.options.local_path != ""
-      prepContainer
+      prep_container
       
       if @opts.options.restore
-        runRestore
+        run_restore
       else
-        runBackup
+        run_backup
       end
     else
-      showError()
+      show_error()
     end
     
   end # run()
   
   private
   
-  def prepContainer
+  def prep_container
     
     # Establish connection
-    showVerbose "Establishing connection...", false
+    show_verbose "Establishing connection...", false
     @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"]);
-    showVerbose " done."
+    show_verbose " done."
     
     # Special option for Slicehost customers in DFW datacenter
     if @opts.options.local_net
@@ -72,9 +72,9 @@ class CFBackup
     
     # Check for the container. If it doesn't exist, create it.
     unless @cf.container_exists?(@opts.options.container)
-      showVerbose "Conainer '#{@opts.options.container}' does not exist. Creating it...", false
+      show_verbose "Conainer '#{@opts.options.container}' does not exist. Creating it...", false
       @cf.create_container(@opts.options.container)
-      showVerbose " done."
+      show_verbose " done."
     end
     
     @container = @cf.container(@opts.options.container)
@@ -86,21 +86,21 @@ class CFBackup
     object.write("STDIN")
   end
   
-  def runBackup
+  def run_backup
     
     path = @opts.options.local_path
   
     if FileTest::file?(path)
       Dir.chdir(File::dirname(path))
-      globOptions = File.join(File::basename(path))
+      glob_options = File.join(File::basename(path))
     elsif @opts.options.recursive
       Dir.chdir(path)
-      globOptions = File.join("**", "*")
+      glob_options = File.join("**", "*")
     else
       Dir.chdir(path)
-      globOptions = File.join("*")
+      glob_options = File.join("*")
     end
-    files = Dir.glob(globOptions)
+    files = Dir.glob(glob_options)
     
     # Upload file(s)
     files.each do |file|  
@@ -109,27 +109,27 @@ class CFBackup
         next 
       end
       
-      showVerbose "Uploading #{file}...", false
+      show_verbose "Uploading #{file}...", false
       object = @container.create_object(file, true)
       object.load_from_filename(file)
-      showVerbose " done."
+      show_verbose " done."
     end # files.each
     
-  end # runBackup()
+  end # run_backup()
   
-  def runRestore
+  def run_restore
     
-    # TODO: Implement runRestore
+    # TODO: Implement run_restore
     # We have to do a bit of fancy footwork to make directories work
     puts "Oops! Restore hasn't been implemented yet. Help me out and submit a patch :-)"
     
-  end # runRestore()
+  end # run_restore()
   
   # Shows given message if verbose output is turned on
-  def showVerbose(message, lineBreak = true)
+  def show_verbose(message, line_break = true)
     
     unless !@opts.options.verbose
-      if lineBreak
+      if line_break
         puts message
       else
         print message
@@ -138,14 +138,14 @@ class CFBackup
       $stdout.flush
     end
     
-  end # showVerbose()
+  end # show_verbose()
   
   # Show error message, banner and exit
-  def showError(message = '')
+  def show_error(message = '')
     puts message
     puts @opts.banner
     exit
-  end # showError()
+  end # show_error()
   
   def parse_container_path(container)
     # Split based on :
