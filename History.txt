@@ -1,0 +1,8 @@
+== 0.4 2009-??-??
+
+* Pipe data straight to container capability
+* Specify remote path or file name
+
+== 0.3 2009-04-08
+
+* Initial release to public
