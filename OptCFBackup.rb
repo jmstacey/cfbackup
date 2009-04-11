@@ -15,15 +15,16 @@ class OptCFBackup
     @banner = "Usage: cfbackup.rb [options] --local_path PATH --container CONTAINER"
     
     @options = OpenStruct.new
-    self.options.pipe_data = false
-    self.options.show_ver  = false
-    self.options.recursive = false
-    self.options.restore   = false
-    self.options.local_net = false
-    self.options.path      = ''
-    self.options.container = ''
-    self.options.config    = 'cfconfig.yml'
-    self.options.verbose   = false;
+    self.options.config       = 'cfconfig.yml'
+    self.options.pipe_data    = false
+    self.options.show_ver     = false
+    self.options.recursive    = false
+    self.options.restore      = false
+    self.options.local_net    = false
+    self.options.container    = ''
+    self.options.local_path   = ''
+    self.options.remote_path  = ''
+    self.options.verbose      = false;
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
@@ -40,12 +41,12 @@ class OptCFBackup
         self.options.verbose = verbose
       end
       
-      opts.on("--local_path LOCAL_PATH", "Local path or file") do |path|
-        self.options.path = path
+      opts.on("--local_path LOCAL_PATH", "Local path or file") do |local_path|
+        self.options.local_path = local_path
       end
       
       opts.on("--container CONTAINER", "Cloud Files container name") do |name|
-        self.options.container = name
+        self.options.container, self.options.remote_path = name.split(":", 2)
       end
       
       opts.on("--restore", "Restore files to local path") do |restore|

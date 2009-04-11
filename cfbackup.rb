@@ -25,7 +25,7 @@ class CFBackup
 
     # Special case if the version is requested
     if @opts.options.show_ver
-      showError('CFBackup v0.3 [027b2a5c]')
+      showError('CFBackup v0.4')
     end
     
     unless (FileTest.exists?(@opts.options.config))
@@ -42,7 +42,7 @@ class CFBackup
     if @opts.options.pipe_data
       prepContainer
       run_piped_data
-    elsif @opts.options.path != ""
+    elsif @opts.options.local_path != ""
       prepContainer
       
       if @opts.options.restore
@@ -82,13 +82,13 @@ class CFBackup
   end # prepConnection()
   
   def run_piped_data
-    object = @container.create_object('test.txt', true)
-    object.write($stdin)
+    object = @container.create_object(@opts.options.remote_path, true)
+    object.write("STDIN")
   end
   
   def runBackup
     
-    path = @opts.options.path
+    path = @opts.options.local_path
   
     if FileTest::file?(path)
       Dir.chdir(File::dirname(path))

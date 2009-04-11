@@ -273,7 +273,7 @@ module CloudFiles
           @http[server] = Net::HTTP.new(server,443)
           @http[server].use_ssl = true
           @http[server].verify_mode = OpenSSL::SSL::VERIFY_NONE
-          @http[server].set_debug_output $stderr
+          # @http[server].set_debug_output $stderr # For debug purposes
           @http[server].start
         rescue
           raise ConnectionException, "Unable to connect to #{server}"
