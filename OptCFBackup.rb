@@ -47,6 +47,7 @@ class OptCFBackup
       
       opts.on("--container CONTAINER", "Cloud Files container name") do |name|
         self.options.container, self.options.remote_path = name.split(":", 2)
+        clean_remote_path        
       end
       
       opts.on("--restore", "Restore files to local path") do |restore|
@@ -70,5 +71,15 @@ class OptCFBackup
     opts.parse!(args)
     
   end # parse()
+  
+  private
+  
+  def clean_remote_path
+    if self.options.remote_path[0,1] == "/"
+      self.options.remote_path.slice!(0)
+    end
+    # Won't work for piped data. Might result in "text.txt/"
+    # self.options.remote_path = self.options.remote_path + "/" unless (self.options.remote_path[-1,1] == "/")
+  end
   
 end # class OptCFBackup
