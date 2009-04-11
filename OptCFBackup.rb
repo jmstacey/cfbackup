@@ -12,7 +12,7 @@ class OptCFBackup
   # Initializes object with command line arguments passed
   def initialize(args)
     
-    @banner = "Usage: cfbackup.rb [options] --local_path PATH --container CONTAINER"
+    @banner = "Usage: cfbackup.rb [options] --pipe_data|--local_path PATH --container CONTAINER"
     
     @options = OpenStruct.new
     self.options.config       = 'cfconfig.yml'
