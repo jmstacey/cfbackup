@@ -47,7 +47,7 @@ class OptCFBackup
       
       opts.on("--container CONTAINER", "Cloud Files container name") do |name|
         self.options.container, self.options.remote_path = name.split(":", 2)
-        clean_remote_path        
+        clean_remote_path unless (self.options.remote_path.nil?) 
       end
       
       opts.on("--restore", "Restore files to local path") do |restore|
