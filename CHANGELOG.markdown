@@ -5,9 +5,11 @@ CFBackup ChangeLog
 -----------------
 
 * Conversion to a Ruby Gem
+* cfbackup put in bin so that it can be called from anywhere
+* Looks in a few standard locations for the config file
 * Unit test framework prepped
 * Cloud Files API has been moved to a separate repository and made available as a gem
-* Most files converted to markdown
+* Most doc files converted to markdown
 
 0.0.4 2009-04-11
 -----------------
