@@ -15,7 +15,8 @@ class OptCFBackup
     @banner = "Usage: cfbackup.rb [options] --pipe_data|--local_path PATH --container CONTAINER"
     
     @options = OpenStruct.new
-    self.options.config       = 'cfconfig.yml'
+    self.options.config       = ['~/.cfconfig.yml', '/etc/cfconfig.yml', './cfconfig.yml']
+    self.options.config       = ''
     self.options.pipe_data    = false
     self.options.show_ver     = false
     self.options.recursive    = false
@@ -58,8 +59,8 @@ class OptCFBackup
         self.options.show_ver = version
       end
       
-      opts.on("--config_file PATH", "Use specified config file, rather than the default") do |config|
-        self.options.config = config
+      opts.on("--config_file PATH", "Use specified config file, rather than the default") do |config|      
+        self.options.config << config
       end
       
       opts.on("--local_net", "Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)") do |local_net|

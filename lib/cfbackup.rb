@@ -14,7 +14,8 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'ruby-cloudfiles/lib/cloudfiles'
+require 'rubygems'
+require 'cloudfiles'
 require 'OptCFBackup'
 require 'yaml'
 
@@ -25,7 +26,15 @@ class CFBackup
 
     # Special case if the version is requested
     if @opts.options.show_ver
-      show_error('CFBackup v0.4')
+      if File.exist?('../VERSION.yml')
+        config = YAML.load(File.read('../VERSION.yml'))
+        show_error("CFBackup v#{config[:major]}.#{config[:minor]}.#{config[:patch]}")
+      else
+        show_error("Error: Can't find the version file.")
+      end
+      
+      @version = YAML::load('VERSION.yml')
+      show_error("CFBackup v#{@version['major']}#{@version['minor']}#{@version['patch']}")
     end
     
     unless (FileTest.exists?(@opts.options.config))
