@@ -4,7 +4,7 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "CFBackup"
+    gem.name = "cfbackup"
     gem.summary = %Q{TODO}
     gem.email = "jon@jonsview.com"
     gem.homepage = "http://github.com/jmstacey/cfbackup"
