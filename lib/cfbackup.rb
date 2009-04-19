@@ -32,16 +32,17 @@ class CFBackup
       else
         show_error("Error: Can't find the version file.")
       end
-      
-      @version = YAML::load('VERSION.yml')
-      show_error("CFBackup v#{@version['major']}#{@version['minor']}#{@version['patch']}")
     end
     
-    unless (FileTest.exists?(@opts.options.config))
-      show_error('Error: Unable to locate config file')
+    # Locate and load config file
+    @opts.options.config.each do |path|
+      if (File.exist?(path))
+        @conf = YAML::load(File.open(path))
+        break
+      end
     end
-      
-    @conf = YAML::load(File.open(@opts.options.config))
+    show_error('Error: Unable to locate config file.') unless (@conf != nil)
+    
   end # initialize()
   
   def run
