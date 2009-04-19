@@ -163,7 +163,3 @@ class CFBackup
   end # parse_container_path()
   
 end # class CFBackup
-
-# Let's get the ball rolling
-backup = CFBackup.new(ARGV)
-backup::run

@@ -21,11 +21,11 @@ TODO: Complete this area
 
 Install
 -----------
-TODO: Complete this area
 
-sudo gem install mime-types archive-tar-minitar nokogiri hoe rcov
+* gem sources -a http://gems.github.com
+* sudo gem install jmstacey-cfbackup
 
-git clone git://github.com/jmstacey/cfbackup.git cfbackup
+Depending on what Operating System you're using, you may be required to install libs that are outside of the gem world.
 
 Copyright
 ------------
