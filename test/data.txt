@@ -1,0 +1,11 @@
+TEST LINE
+And some more
+date
+This file will
+be used in the
+piping test to make
+sure that we can
+pipe date directly 
+into a container
+using standard
+input.
