@@ -1,3 +1,0 @@
-[submodule "ruby-cloudfiles"]
-	path = ruby-cloudfiles
-	url = git@github.com:jmstacey/cfbackup.git
