@@ -15,7 +15,7 @@ class OptCFBackup
     @banner = "Usage: cfbackup.rb [options] --pipe_data|--local_path PATH --container CONTAINER"
     
     @options = OpenStruct.new
-    self.options.config       = ['~/.cfconfig.yml', './cfconfig.yml', '/etc/cfconfig.yml']
+    self.options.config       = ["#{ENV['HOME']}/.cfconfig.yml", './cfconfig.yml', '/etc/cfconfig.yml']
     self.options.pipe_data    = false
     self.options.show_ver     = false
     self.options.recursive    = false
