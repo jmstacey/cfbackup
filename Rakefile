@@ -42,6 +42,18 @@ end
 
 task :default => :test
 
+task :all do
+  ruby %{setup.rb config}
+  ruby %{setup.rb setup}
+  ruby %{setup.rb install}
+end
+
+task :install => :all
+
+task :clean do
+  ruby %{setup.rb clean}
+end
+
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|
   if File.exist?('VERSION.yml')
