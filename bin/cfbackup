@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'rubygems'
-require 'CFBackup'
+require 'cfbackup'
 
 backup = CFBackup.new(ARGV)
 backup::run
