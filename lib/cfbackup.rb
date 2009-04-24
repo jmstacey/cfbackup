@@ -27,8 +27,8 @@ class CFBackup
     # Special case if the version is requested
     if @opts.options.show_ver
       version_file = File.join(File.dirname(__FILE__), '..', 'VERSION.yml')
-      config = YAML::load(File.open(version_file))
-      show_error("CFBackup v#{config[:major]}.#{config[:minor]}.#{config[:patch]}")
+      version = YAML::load(File.open(version_file))
+      show_error("CFBackup v#{version[:major]}.#{version[:minor]}.#{version[:patch]}")
     end
     
     # Locate and load config file
