@@ -45,6 +45,8 @@ class CFBackup
     end
     show_error('Error: Unable to locate config file.') unless (@conf != nil)
     
+    prep_connection
+    
   end # initialize()
   
   def run
@@ -71,7 +73,7 @@ class CFBackup
   
   private
   
-  def prep_container
+  def prep_connection
     
     # Establish connection
     show_verbose "Establishing connection...", false
@@ -95,18 +97,12 @@ class CFBackup
   end # prepConnection()
   
   def push_piped_data
-    
-    prep_container
-    
     puts "Warning: 5GB maximum filesize"
     object = @container.create_object(@opts.options.remote_path, true)
     object.write("STDIN")
   end
   
   def push_files
-    
-    prep_container
-    
     path = @opts.options.local_path
   
     if FileTest::file?(path)
