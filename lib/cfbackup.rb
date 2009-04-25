@@ -131,8 +131,12 @@ class CFBackup
       end
       
       show_verbose "Uploading #{file}...", false
-      object = @container.create_object(file, true)
+      
+      remote_path = File.join(@opts.options.remote_path, file)
+      object      = @container.create_object(remote_path, true)
+      
       object.load_from_filename(file)
+      
       show_verbose " done."
     end # files.each
     
