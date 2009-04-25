@@ -74,7 +74,6 @@ class CFBackup
   private
   
   def prep_connection
-    
     # Establish connection
     show_verbose "Establishing connection...", false
     @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"]);
@@ -84,25 +83,32 @@ class CFBackup
     if @opts.options.local_net
       @cf.storagehost = 'snet-storage.clouddrive.com'
     end
+  end # prep_connection()
     
-    # Check for the container. If it doesn't exist, create it.
-    unless @cf.container_exists?(@opts.options.container)
-      show_verbose "Conainer '#{@opts.options.container}' does not exist. Creating it...", false
+  def prep_container(create_container = true)
+    # Check for the container. If it doesn't exist, create it if allowed
+    if !@cf.container_exists?(@opts.optsions.container) && !create_container
+      show_error("Error: Container '#{@opts.options.container}' does not exist.")
+    else
+      show_verbose "Container '#{@opts.options.container}' does not exist. Creating it...", false
       @cf.create_container(@opts.options.container)
       show_verbose " done."
     end
     
     @container = @cf.container(@opts.options.container)
-    
-  end # prepConnection()
+  end # prep_cnnection()
   
   def push_piped_data
+    prep_container
+    
     puts "Warning: 5GB maximum filesize"
     object = @container.create_object(@opts.options.remote_path, true)
     object.write("STDIN")
-  end
+  end # push_piped_data()
   
   def push_files
+    prep_container
+    
     path = @opts.options.local_path
   
     if FileTest::file?(path)
@@ -133,10 +139,25 @@ class CFBackup
   end # push_files()
   
   def pull_files
+    prep_container(false)
     
-    # TODO: Implement pull_files
-    # We have to do a bit of fancy footwork to make directories work
-    puts "Oops! Pulling files hasn't been implemented yet. Help me out and submit a patch :-)"
+    # From the API Documentation:
+    #   "The system will return a maximum of 10,000 Object names per request."
+    # But I'm assuming that the ruby-cloudfiles implementation has taken care of that
+    
+    show_verbose "Pulling #{@container.count} objects."
+    
+    counter = 1
+    @container.objects.each do |object|
+      show_verbose "Pull object (#{counter}/#{@container.count}) #{@object.name}...", false
+      
+      filename = File.join(@opts.options.local_path + object.name)
+      object.save_to_filename(filename)
+      
+      show_verbose " done"
+      
+      counter += 1
+    end
     
   end # pull_files()
   
