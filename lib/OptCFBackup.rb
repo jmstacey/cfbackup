@@ -12,14 +12,14 @@ class OptCFBackup
   # Initializes object with command line arguments passed
   def initialize(args)
     
-    @banner = "Usage: cfbackup.rb [options] --pipe_data|--local_path PATH --container CONTAINER"
+    @banner = "Usage: cfbackup.rb --action push|pull|delete options --container CONTAINER"
     
     @options = OpenStruct.new
     self.options.config       = ["#{ENV['HOME']}/.cfconfig.yml", './cfconfig.yml', '/etc/cfconfig.yml']
+    self.options.action       = ''
     self.options.pipe_data    = false
     self.options.show_ver     = false
     self.options.recursive    = false
-    self.options.restore      = false
     self.options.local_net    = false
     self.options.container    = ''
     self.options.local_path   = ''
@@ -28,6 +28,10 @@ class OptCFBackup
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
+      
+      opts.on("--action ACTION", "Action to perform: push, pull, or delete.") do |action|
+        self.options.action = action
+      end
       
       opts.on("--pipe_data", "Pipe data from another application and stream it to Cloud Files") do |pipe|
         self.options.pipe_data = pipe
@@ -50,15 +54,12 @@ class OptCFBackup
         clean_remote_path unless (self.options.remote_path.nil?) 
       end
       
-      opts.on("--restore", "Restore files to local path") do |restore|
-        self.options.restore = restore
-      end
-      
       opts.on("--version", "Show current version") do |version|
         self.options.show_ver = version
       end
       
-      opts.on("--config_file PATH", "Use specified config file, rather than the default") do |config|      
+      opts.on("--config_file PATH", "Use specified config file, rather than the default") do |config|
+        self.options.config = Array.new()
         self.options.config << config
       end
       
@@ -78,7 +79,7 @@ class OptCFBackup
     if self.options.remote_path[0,1] == "/"
       self.options.remote_path.slice!(0)
     end
-    # Won't work for piped data. Might result in "text.txt/"
+    # Follwoig won't work for piped data. Might result in "text.txt/"
     # self.options.remote_path = self.options.remote_path + "/" unless (self.options.remote_path[-1,1] == "/")
   end
   

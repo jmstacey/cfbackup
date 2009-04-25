@@ -51,17 +51,18 @@ class CFBackup
     
     show_error() unless (@opts.options.container != "")
     
-    if @opts.options.pipe_data
-      prep_container
-      run_piped_data
-    elsif @opts.options.local_path != ""
-      prep_container
-      
-      if @opts.options.restore
-        run_restore
+    # Run appropriate action
+    case @opts.options.action
+    when 'push'
+      if @opts.options.pipe_data
+        push_piped_data
       else
-        run_backup
+        push_files
       end
+    when 'pull'
+      pull_files
+    when 'delete'
+      delete_files
     else
       show_error()
     end
@@ -93,13 +94,18 @@ class CFBackup
     
   end # prepConnection()
   
-  def run_piped_data
-    puts "Warning: 5GB per stream cap"
+  def push_piped_data
+    
+    prep_container
+    
+    puts "Warning: 5GB maximum filesize"
     object = @container.create_object(@opts.options.remote_path, true)
     object.write("STDIN")
   end
   
-  def run_backup
+  def push_files
+    
+    prep_container
     
     path = @opts.options.local_path
   
@@ -128,15 +134,26 @@ class CFBackup
       show_verbose " done."
     end # files.each
     
-  end # run_backup()
+  end # push_files()
   
-  def run_restore
+  def pull_files
     
-    # TODO: Implement run_restore
+    # TODO: Implement pull_files
     # We have to do a bit of fancy footwork to make directories work
-    puts "Oops! Restore hasn't been implemented yet. Help me out and submit a patch :-)"
+    puts "Oops! Pulling files hasn't been implemented yet. Help me out and submit a patch :-)"
     
-  end # run_restore()
+  end # pull_files()
+  
+  def delete_files
+    
+    # TODO: Implement delete_files
+    # We have to do a bit of fancy footwork to make directories work
+    puts "Oops! Deleting remote files hasn't been implemented yet. Help me out and submit a patch :-)"
+    
+  end # delete_files()
+  
+  
+  # Helper methdos below
   
   # Shows given message if verbose output is turned on
   def show_verbose(message, line_break = true)
