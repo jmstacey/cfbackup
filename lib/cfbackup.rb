@@ -149,10 +149,13 @@ class CFBackup
     #   "The system will return a maximum of 10,000 Object names per request."
     # But I'm assuming that the ruby-cloudfiles implementation has taken care of that
     
+    # TODO: Figure out the best way to handle files/directories/recursion gracefully
+    
+    
     show_verbose "Pulling #{@container.count} objects."
     
     counter = 1
-    @container.objects.each do |object|
+    @container.objects(:path => @opts.options.remote_path).each do |object|
       show_verbose "Pull object (#{counter}/#{@container.count}) #{@object.name}...", false
       
       filename = File.join(@opts.options.local_path + object.name)
