@@ -1,0 +1,5 @@
+pkg
+rdoc
+tmp
+test/tmp
+.DS_Store
