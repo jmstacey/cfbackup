@@ -53,6 +53,7 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "cfbackup #{version}"
   rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('example_scripts/**')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
