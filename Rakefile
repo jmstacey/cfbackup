@@ -10,7 +10,7 @@ begin
     gem.homepage = "http://github.com/jmstacey/cfbackup"
     gem.authors = ["Jon Stacey"]
     
-    # dependencies
+    # Dependencies
     gem.add_dependency('jmstacey-ruby-cloudfiles', '>=1.3.3')
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
