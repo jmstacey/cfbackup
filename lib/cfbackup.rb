@@ -150,15 +150,12 @@ class CFBackup
   def pull_files()
     prep_container(false)
     
-    recursive = @opts.options.recursive
-    file      = false
-    
+    file = false
     unless @opts.options.remote_path.to_s == ''
       if @container.object_exists?(@opts.options.remote_path)
         if @container.object(@opts.options.remote_path).content_type != "application/directory" && @opts.options.recursive
           puts "Warning: This is a file so the recursive option is meaningless."
-          recursive = false
-          file      = true
+          file = true
         end
       end
     end
@@ -180,7 +177,7 @@ class CFBackup
       next unless (object.content_type != "application/directory")
       
       info = File.split(object.name)
-      if info[0] == '.'
+      if info[0] == '.' || file
         filepath = @opts.options.local_path
       else
         filepath = File.join(@opts.options.local_path, info[0])
@@ -191,7 +188,7 @@ class CFBackup
         filename = info[1]
       else
         File.makedirs filepath
-        filename = File.join(filepath + info[1])
+        filename = File.join(filepath, info[1])
       end
       
       object.save_to_filename(filename)
@@ -213,17 +210,14 @@ class CFBackup
   
   # Shows given message if verbose output is turned on
   def show_verbose(message, line_break = true)
-    
     unless !@opts.options.verbose
       if line_break
         puts message
       else
         print message
       end
-      
       $stdout.flush
     end
-    
   end # show_verbose()
   
   # Show error message, banner and exit
@@ -232,11 +226,5 @@ class CFBackup
     puts @opts.banner
     exit
   end # show_error()
-  
-  def pseudo_tree(path, &objects)
-    # Traverse tree recursively
-    
-  end # pseudo_tree()
-  
   
 end # class CFBackup
