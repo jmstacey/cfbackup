@@ -15,6 +15,7 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 require 'rubygems'
+require 'ftools'
 require 'cloudfiles'
 require 'OptCFBackup'
 require 'yaml'
@@ -62,7 +63,7 @@ class CFBackup
         push_files
       end
     when 'pull'
-      pull_files
+      pull_files()
     when 'delete'
       delete_files
     else
@@ -87,7 +88,7 @@ class CFBackup
     
   def prep_container(create_container = true)
     # Check for the container. If it doesn't exist, create it if allowed
-    if !@cf.container_exists?(@opts.optsions.container) && !create_container
+    if !@cf.container_exists?(@opts.options.container) && !create_container
       show_error("Error: Container '#{@opts.options.container}' does not exist.")
     else
       show_verbose "Container '#{@opts.options.container}' does not exist. Creating it...", false
@@ -132,9 +133,13 @@ class CFBackup
       
       show_verbose "Uploading #{file}...", false
       
-      remote_path = File.join(@opts.options.remote_path, file)
-      object      = @container.create_object(remote_path, true)
-      
+      if @opts.options.remote_path.to_s == ''
+        remote_path = file
+      else
+        remote_path = File.join(@opts.options.remote_path, file)
+      end
+        
+      object = @container.create_object(remote_path, true)
       object.load_from_filename(file)
       
       show_verbose " done."
@@ -142,30 +147,57 @@ class CFBackup
     
   end # push_files()
   
-  def pull_files
+  def pull_files()
     prep_container(false)
     
-    # From the API Documentation:
-    #   "The system will return a maximum of 10,000 Object names per request."
-    # But I'm assuming that the ruby-cloudfiles implementation has taken care of that
+    recursive = @opts.options.recursive
+    file      = false
     
-    # TODO: Figure out the best way to handle files/directories/recursion gracefully
-    
-    
-    show_verbose "Pulling #{@container.count} objects."
-    
-    counter = 1
-    @container.objects(:path => @opts.options.remote_path).each do |object|
-      show_verbose "Pull object (#{counter}/#{@container.count}) #{@object.name}...", false
-      
-      filename = File.join(@opts.options.local_path + object.name)
-      object.save_to_filename(filename)
-      
-      show_verbose " done"
-      
-      counter += 1
+    unless @opts.options.remote_path.to_s == ''
+      if @container.object_exists?(@opts.options.remote_path)
+        if @container.object(@opts.options.remote_path).content_type != "application/directory" && @opts.options.recursive
+          puts "Warning: This is a file so the recursive option is meaningless."
+          recursive = false
+          file      = true
+        end
+      end
     end
     
+    # Get array of objects to process
+    if file
+      objects = ["#{@container.object(@opts.options.remote_path)}"]
+    elsif recursively
+      # Use prefix instead of path so that "subdirectories" are included
+      objects = @container.objects(:prefix => @opts.options.remote_path)
+    else
+      objects = @container.objects(:path => @opts.options.remote_path)
+    end
+    
+    # Process objects
+    counter = 1
+    show_verbose "There are #{objects.count} objects to process."
+    objects.each do |object|
+      next unless (object.content_type != "application/directory")
+      
+      info = File.split(object.name)
+      if info[0] == '.'
+        filepath = @opts.options.local_path
+      else
+        filepath = File.join(@opts.options.local_path, info[0])
+      end
+      
+      show_verbose "Pulling object (#{counter}/#{objects.count}) #{@object.name}...", false
+      if file
+        filename = info[1]
+      else
+        File.makedirs filepath
+        filename = File.join(filepath + info[1])
+      end
+      
+      object.save_to_filename(filename)
+      show_verbose " done"
+      counter += 1
+    end
   end # pull_files()
   
   def delete_files
@@ -201,8 +233,10 @@ class CFBackup
     exit
   end # show_error()
   
-  def parse_container_path(container)
-    # Split based on :
-  end # parse_container_path()
+  def pseudo_tree(path, &objects)
+    # Traverse tree recursively
+    
+  end # pseudo_tree()
+  
   
 end # class CFBackup
