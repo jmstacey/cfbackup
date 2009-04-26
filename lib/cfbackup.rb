@@ -113,14 +113,11 @@ class CFBackup
     path = @opts.options.local_path
   
     if FileTest::file?(path)
-      Dir.chdir(File::dirname(path))
-      glob_options = File.join(File::basename(path))
+      glob_options = File.join(File::dirname(path), File::basename(path))
     elsif @opts.options.recursive
-      Dir.chdir(path)
-      glob_options = File.join("**", "*")
+      glob_options = File.join(path, "**", "*")
     else
-      Dir.chdir(path)
-      glob_options = File.join("*")
+      glob_options = File.join(path, "*")
     end
     files = Dir.glob(glob_options)
     
@@ -153,17 +150,22 @@ class CFBackup
     file = false
     unless @opts.options.remote_path.to_s == ''
       if @container.object_exists?(@opts.options.remote_path)
-        if @container.object(@opts.options.remote_path).content_type != "application/directory" && @opts.options.recursive
-          puts "Warning: This is a file so the recursive option is meaningless."
+        if @container.object(@opts.options.remote_path).content_type != "application/directory"
           file = true
+          if @opts.options.recursive
+            puts "Warning: This is a file so the recursive option is meaningless."
+          end
         end
+      else
+        show_error("The object #{@opts.options.remote_path} does not exist")
       end
     end
     
     # Get array of objects to process
+    objects = Array.new
     if file
-      objects = ["#{@container.object(@opts.options.remote_path)}"]
-    elsif recursively
+      objects << @opts.options.remote_path.to_s
+    elsif @opts.options.recursive
       # Use prefix instead of path so that "subdirectories" are included
       objects = @container.objects(:prefix => @opts.options.remote_path)
     else
@@ -172,26 +174,49 @@ class CFBackup
     
     # Process objects
     counter = 1
-    show_verbose "There are #{objects.count} objects to process."
-    objects.each do |object|
+    show_verbose "There are #{objects.length} objects to process."
+    objects.each do |object_name|
+      object = @container.object(object_name)
       next unless (object.content_type != "application/directory")
       
-      info = File.split(object.name)
-      if info[0] == '.' || file
-        filepath = @opts.options.local_path
-      else
-        filepath = File.join(@opts.options.local_path, info[0])
-      end
+      path_info = File.split(@opts.options.local_path.to_s)
+      file_info = File.split(object.name.to_s)
       
-      show_verbose "Pulling object (#{counter}/#{objects.count}) #{@object.name}...", false
-      if file
-        filename = info[1]
-      else
-        File.makedirs filepath
-        filename = File.join(filepath, info[1])
+      if file # Dealing with a single file pull
+        if @opts.options.local_path.to_s == ''
+          filepath = file_info[1].to_s # Use current directory and original name
+        else
+          if File.exist?(@opts.options.local_path.to_s)
+            # The file exists, so we will overwrite it
+            filepath = File.join(@opts.options.local_path.to_s)
+          else
+            # If the file doesn't exist, a new name may have been given.
+            # Test the path.
+            if File.exist?(path_info[0])
+              # A new name was given with a valid path
+              filepath = File.join(path_info[0], path_info[1])
+            else
+              # The given path is not valid
+              show_error("cfbackup: #{file_info[0]}: No such file or directory.")
+            end
+          end
+        end
+      else # Dealing with a multi-object pull
+        if @opts.options.local_path.to_s == ''
+          filepath = object.name.to_s # Use current directory with object name
+        else
+          if File.directory?(@opts.options.local_path.to_s)
+            filepath = File.join(@opts.options.local_path.to_s, object.name.to_s)
+          else
+            # We can't copy a directory to a file...
+            show_error("cfbackup: #{@container.name}:#{@opts.options.remote_path.to_s}/ is a directory (not copied).")
+          end
+        end
+        File.makdirs File.join(@opts.options.local_path.to_s, file_info[1]) # Create subdirectories as needed
       end
-      
-      object.save_to_filename(filename)
+          
+      show_verbose "Pulling object (#{counter}/#{objects.length}) #{object.name}...", false
+      object.save_to_filename(filepath)
       show_verbose " done"
       counter += 1
     end
