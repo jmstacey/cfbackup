@@ -144,7 +144,7 @@ class CFBackup
     
   end # push_files()
   
-  def pull_files()
+  def pull_files
     prep_container(false)
     
     file = false
@@ -212,7 +212,7 @@ class CFBackup
             show_error("cfbackup: #{@container.name}:#{@opts.options.remote_path.to_s}/ is a directory (not copied).")
           end
         end
-        File.makdirs File.join(@opts.options.local_path.to_s, file_info[1]) # Create subdirectories as needed
+        File.makedirs File.join(@opts.options.local_path.to_s, file_info[0]) # Create subdirectories as needed
       end
           
       show_verbose "Pulling object (#{counter}/#{objects.length}) #{object.name}...", false
