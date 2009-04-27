@@ -2,4 +2,5 @@ pkg
 rdoc
 tmp
 test/tmp
+test/tmp/data
 .DS_Store
