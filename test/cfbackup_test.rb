@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class CfbackupTest < Test::Unit::TestCase
-  # Usage: cfbackup.rb --action push|pull|delete options --container CONTAINER
+  
+  $test_dir = "test/tmp"
   
   # TODO: Mock STDIN to test piping data
   # context "A push using piped data" do
@@ -14,8 +15,6 @@ class CfbackupTest < Test::Unit::TestCase
   #     assert @backup.run
   #   end
   # end # context "A push using piped data"
-  
-  $test_dir = "test/tmp"
   
   context "A recursive push" do
     setup do
@@ -66,23 +65,19 @@ class CfbackupTest < Test::Unit::TestCase
     
     teardown do
       system "rm -rf test/tmp/*"
-      # I didn't feel save with $test_dir + '/*'
-      # Disaster waiting to happen. rm_rf is already bad enough.
+      # I didn't feel safe with $test_dir + '/*'
+      # Disaster waiting to happen. rm -rf is already bad enough.
     end
-  end # context "A single file pull"
+  end # context "A recursive pull"
   
-  # 
-  # context "A recursive deletion" do
-  #   setup do
-  #     mock_ARGV = {""}
-  #     @backup = CFBackup.new(mock_ARGV)
-  #   end
-  #   
-  #   should "should return true when files existed and were deleted" do
-  #     assert @backup.run
-  #   end
-  # end # context "A recurisve deletion"
-  # 
-  
+  context "A pseudo directory deletion" do
+    setup do
+      #mock_ARGV
+    end
+    
+    should "do soemthing" do
+      # assert something
+    end
+  end # context "A pseudo directory deletion"
   
 end
