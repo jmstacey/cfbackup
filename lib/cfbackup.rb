@@ -130,10 +130,11 @@ class CFBackup
       
       show_verbose "Uploading #{file}...", false
       
+      file_info = File.split(file.to_s)
       if @opts.options.remote_path.to_s == ''
-        remote_path = file
+        remote_path = file_info[1]
       else
-        remote_path = File.join(@opts.options.remote_path, file)
+        remote_path = File.join(@opts.options.remote_path, file.to_s)
       end
         
       object = @container.create_object(remote_path, true)
