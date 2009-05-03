@@ -17,7 +17,7 @@
 require 'rubygems'
 require 'ftools'
 require 'cloudfiles'
-require 'OptCFBackup'
+require 'optcfbackup'
 require 'yaml'
 
 class CFBackup
@@ -148,30 +148,8 @@ class CFBackup
   def pull_files
     prep_container(false)
     
-    file = false
-    unless @opts.options.remote_path.to_s == ''
-      if @container.object_exists?(@opts.options.remote_path)
-        if @container.object(@opts.options.remote_path).content_type != "application/directory"
-          file = true
-          if @opts.options.recursive
-            puts "Warning: This is a file so the recursive option is meaningless."
-          end
-        end
-      else
-        show_error("The object #{@opts.options.remote_path} does not exist")
-      end
-    end
-    
-    # Get array of objects to process
-    objects = Array.new
-    if file
-      objects << @opts.options.remote_path.to_s
-    elsif @opts.options.recursive
-      # Use prefix instead of path so that "subdirectories" are included
-      objects = @container.objects(:prefix => @opts.options.remote_path)
-    else
-      objects = @container.objects(:path => @opts.options.remote_path)
-    end
+    file    = object_file?
+    objects = get_objects_array
     
     # Process objects
     counter = 1
@@ -224,15 +202,66 @@ class CFBackup
   end # pull_files()
   
   def delete_files
+    prep_container(false)
     
-    # TODO: Implement delete_files
-    # We have to do a bit of fancy footwork to make directories work
-    puts "Oops! Deleting remote files hasn't been implemented yet. Help me out and submit a patch :-)"
+    if object_file?
+      @container.delete_object(@opts.options.remote_path.to_s)
+    else
+      if !@opts.options.recursive
+        show_error("Error: #{@opts.options.remote_path} is a directory but the the recursive option was not specified. Doing nothing.")
+      else
+        objects = get_objects_array
+        
+        # Process objects
+        counter = 1
+        show_verbose "There are #{objects.length} objects to process."
+        objects.each do |object_name|
+          @container.delete_object(object_name)
+        end
+      end
+    end
     
   end # delete_files()
   
   
-  # Helper methdos below
+  # Helper methods below
+  
+  def object_file?
+    
+    file = false
+    unless @opts.options.remote_path.to_s == ''
+      if @container.object_exists?(@opts.options.remote_path)
+        if @container.object(@opts.options.remote_path).content_type != "application/directory"
+          file = true
+          if @opts.options.recursive
+            puts "Warning: This is a file so the recursive option is meaningless."
+          end
+        end
+      else
+        show_error("The object #{@opts.options.remote_path} does not exist")
+      end
+    end
+    
+    return file
+  end
+  
+  def get_objects_array
+    
+    file = object_file?
+    
+    # Get array of objects to process
+    objects = Array.new
+    if file
+      objects << @opts.options.remote_path.to_s
+    elsif @opts.options.recursive
+      # Use prefix instead of path so that "subdirectories" are included
+      objects = @container.objects(:prefix => @opts.options.remote_path)
+    else
+      objects = @container.objects(:path => @opts.options.remote_path)
+    end
+    
+    return objects
+  end
   
   # Shows given message if verbose output is turned on
   def show_verbose(message, line_break = true)
