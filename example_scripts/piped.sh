@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# In this example, data is piped direcly from the backup to a Cloud Files
+# In this example, data is piped directly from the backup to a Cloud Files
 # container, bypassing the intermediate temp directory step
 #
 # This is an example script that you could use in combination with CFBackup.
