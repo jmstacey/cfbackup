@@ -71,7 +71,7 @@ class OptCFBackup
     
     opts.parse!(args)
     
-  end # parse()
+  end # initialize()
   
   private
   
