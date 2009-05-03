@@ -27,6 +27,33 @@ Install
 * gem sources -a http://gems.github.com
 * sudo gem install jmstacey-cfbackup
 
+Configuration
+-----------
+
+CFBackup will look in the following places (in order) for the configuration file named cfconfig.yml
+
+* Hidden in home directory (~/.cfbackup.yml)
+* Non-hidden in present working directory (./cfbackup.yml)
+* In etc (/etc/cfbackup.yml)
+
+The configuration file can be overidden at any time with the --config_file option
+
+Configuration
+-----------
+
+    Usage: cfbackup.rb --action push|pull|delete options --container CONTAINER
+            --action ACTION              Action to perform: push, pull, or delete.
+            --pipe_data                  Pipe data from another application and stream it to Cloud Files
+        -r, --recursive                  Traverse local path recursivley
+        -v, --verbose                    Run verbosely
+            --local_path LOCAL_PATH      Local path or file
+            --container CONTAINER        Cloud Files container name
+            --version                    Show current version
+            --config_file PATH           Use specified config file, rather than the default
+            --local_net                  Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)
+            
+The wiki has some usage examples and some sample automation scripts can be found in the example_scripts directory.
+
 Copyright
 ------------
 
