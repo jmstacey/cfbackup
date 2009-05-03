@@ -198,17 +198,19 @@ class CFBackup
       else # Dealing with a multi-object pull
         if @opts.options.local_path.to_s == ''
           filepath = object.name.to_s # Use current directory with object name
+          dir_path = file_info[0]
         else
           if File.directory?(@opts.options.local_path.to_s)
             filepath = File.join(@opts.options.local_path.to_s, object.name.to_s)
+            dir_path = File.join(@opts.options.local_path, file_info[0])
           else
             # We can't copy a directory to a file...
             show_error("cfbackup: #{@container.name}:#{@opts.options.remote_path.to_s}/ is a directory (not copied).")
           end
         end
-        File.makedirs File.join(@opts.options.local_path.to_s, file_info[0]) # Create subdirectories as needed
+        File.makedirs(dir_path) # Create subdirectories as needed
       end
-          
+      
       show_verbose "(#{counter}/#{objects.length}) Pulling object #{object.name}...", false
       object.save_to_filename(filepath)
       show_verbose " done"
