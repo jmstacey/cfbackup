@@ -88,12 +88,14 @@ class CFBackup
     
   def prep_container(create_container = true)
     # Check for the container. If it doesn't exist, create it if allowed
-    if !@cf.container_exists?(@opts.options.container) && !create_container
-      show_error("Error: Container '#{@opts.options.container}' does not exist.")
-    else
-      show_verbose "Container '#{@opts.options.container}' does not exist. Creating it...", false
-      @cf.create_container(@opts.options.container)
-      show_verbose " done."
+    if !@cf.container_exists?(@opts.options.container)
+      if create_container
+        show_verbose "Container '#{@opts.options.container}' does not exist. Creating it...", false
+        @cf.create_container(@opts.options.container)
+        show_verbose " done."
+      else
+        show_error("Error: Container '#{@opts.options.container}' does not exist.")
+      end
     end
     
     @container = @cf.container(@opts.options.container)
