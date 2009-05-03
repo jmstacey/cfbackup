@@ -20,5 +20,5 @@ mysqldump -u root -pPASSWORD --all-databases --flush-logs --lock-all-tables | gz
 tar -czvf main_backup$NOW.tar.gz /home/user /etc /usr/local/nginx
 
 cd ~/cfbackup
-ruby cfbackup.rb --local_path temp/ --container $CONTAINER
+cfbackup.rb --action push --local_path temp/ --container $CONTAINER
 rm -f temp/*
