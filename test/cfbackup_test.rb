@@ -7,7 +7,7 @@ class CfbackupTest < Test::Unit::TestCase
     
     context "with a single file push" do
       setup do
-        mock_ARGV = ['--action', 'push', '--local_path', 'test/data/data.txt', '--container', 'test', '--config_file', 'test/cfconfig.yml']
+        mock_ARGV = ['--action', 'push', '--local_path', 'test/data/data.txt', '--container', 'test', '--config_file', 'test/cfconfig.yml', '-v']
         @backup = CFBackup.new(mock_ARGV)
       end
       
@@ -18,7 +18,7 @@ class CfbackupTest < Test::Unit::TestCase
     
     context "with a recursive directory push" do
       setup do
-        mock_ARGV = ['--action', 'push', '-r', '--local_path', 'test/data', '--container', 'test', '--config_file', 'test/cfconfig.yml']
+        mock_ARGV = ['--action', 'push', '-r', '--local_path', 'test/data', '--container', 'test', '--config_file', 'test/cfconfig.yml', '-v']
         @backup = CFBackup.new(mock_ARGV)
       end
       
@@ -34,16 +34,16 @@ class CfbackupTest < Test::Unit::TestCase
     context "with a single file pull" do
       file     = 'data.txt'
       filepath = File.join(TEST_DIR, file)
-
+  
       setup do
-        mock_ARGV = ['--action', 'pull', '--container', "test:#{file}", '--local_path', "#{filepath}", '--config_file', 'test/cfconfig.yml']
+        mock_ARGV = ['--action', 'pull', '--container', "test:#{file}", '--local_path', "#{filepath}", '--config_file', 'test/cfconfig.yml', '-v']
         @backup = CFBackup.new(mock_ARGV)
       end
-
+  
       should "return true when file succesfully pulled" do
         assert @backup.run
       end
-
+  
       # I don't know why this doesn't work. It's like File is caching results
       # and not updating until the applicaiton exists. Overcoming by
       # asserting the file deletion during teardown at the loss of shoulda
@@ -51,15 +51,15 @@ class CfbackupTest < Test::Unit::TestCase
       # should "result in test/tmp/#{file} existing" do      
       #   assert File.exist?(filepath)
       # end
-
+  
       teardown do
         assert File.delete(filepath)
       end
     end
     
-    context "A recursive pull" do    
+    context "with a recursive pull" do    
       setup do
-        mock_ARGV = ['--action', 'pull', '--container', "test", '--local_path', "test/tmp", '--config_file', 'test/cfconfig.yml']
+        mock_ARGV = ['--action', 'pull', '--container', "test", '--local_path', "test/tmp", '--config_file', 'test/cfconfig.yml', '-v']
         @backup = CFBackup.new(mock_ARGV)
       end
       
@@ -78,23 +78,30 @@ class CfbackupTest < Test::Unit::TestCase
     
   end
   
-  # context "A deletion" do
-  #   
-  #   context "of a single file" do
-  #     setup do
-  #       mock_ARGV = ['--action', 'delete', '--container', "test:data.txt", '--config_file', 'test/cfconfig.yml']
-  #       @backup = CFBackup.new(mock_ARGV)
-  #     end
-  #     
-  #     should "return true when file deleted" do
-  #       assert @backup.run
-  #     end
-  #   end
-  #   
-  #   context "of a pseudo directory" do
-  #     # Do stuff
-  #   end
-  #   
-  # end
+  context "A deletion" do
+    
+    context "of a single file" do
+      setup do
+        mock_ARGV = ['--action', 'delete', '--container', "test:folder_1/file1.txt", '--config_file', 'test/cfconfig.yml', '-v']
+        @backup = CFBackup.new(mock_ARGV)
+      end
+      
+      should "return true when file deleted" do
+        assert @backup.run
+      end
+    end
+    
+    context "of a pseudo directory" do
+      setup do
+        mock_ARGV = ['--action', 'delete', '-r', '--container', "test:folder_2", '--config_file', 'test/cfconfig.yml', '-v']
+        @backup = CFBackup.new(mock_ARGV)
+      end
+      
+      should "return true when directory deleted" do
+        assert @backup.run
+      end
+    end
+    
+  end # context "A deletion"
   
 end
