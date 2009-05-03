@@ -6,7 +6,9 @@ CFBackup is a small ruby program that transfers files or directories from the lo
 Features
 -----------
 
-* Backup a single file or directory (recursion uses pseudo directories)
+* Push (backup) a single file or directory (uses pseudo directories)
+* Pull (restore) a single file or directory
+* Delete (rotate) remote objects
 * Pipe data straight to container
 * Free transfers over local Rackspace network for Slicehost/Cloud Server 
   customers in DFW1 datacenter
@@ -30,7 +32,8 @@ Install
 Configuration
 -----------
 
-CFBackup will look in the following places (in order) for the configuration file named cfconfig.yml
+A sample configuration file named cfconfig.yml should have be placed in /etc if installed as a gem.
+CFBackup will look in the following places (in order) for the configuration file named cfconfig.yml:
 
 * Hidden in home directory (~/.cfbackup.yml)
 * Non-hidden in present working directory (./cfbackup.yml)
