@@ -36,7 +36,7 @@ CFBackup will look in the following places (in order) for the configuration file
 * Non-hidden in present working directory (./cfbackup.yml)
 * In etc (/etc/cfbackup.yml)
 
-The configuration file can be overidden at any time with the --config_file option
+The configuration file can be overridden at any time with the --config_file option
 
 Configuration
 -----------
