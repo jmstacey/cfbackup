@@ -1,10 +1,10 @@
 Gem::Specification.new do |s|
   s.name = %q{cfbackup}
-  s.version = "0.5.0"
+  s.version = "0.7.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jon Stacey"]
-  s.date = %q{2009-04-25}
+  s.date = %q{2009-05-03}
   s.default_executable = %q{cfbackup}
   s.email = %q{jon@jonsview.com}
   s.executables = ["cfbackup"]
@@ -22,7 +22,13 @@ Gem::Specification.new do |s|
     "lib/OptCFBackup.rb",
     "lib/cfbackup.rb",
     "test/cfbackup_test.rb",
-    "test/data.txt",
+    "test/cfconfig.yml",
+    "test/data/data.txt",
+    "test/data/folder_1/file1.txt",
+    "test/data/folder_1/file2.txt",
+    "test/data/folder_1/folder_3/file1.txt",
+    "test/data/folder_2/file1.txt",
+    "test/data/folder_2/file2.txt",
     "test/test_helper.rb"
   ]
   s.has_rdoc = true
