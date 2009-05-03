@@ -1,6 +1,19 @@
 CFBackup ChangeLog
 ==================
 
+0.6.0 2009-05-03
+-----------------
+* Added example_scripts to RDoc.
+* gem creates cfconfig.yml in /etc for reference
+* CFBackup looks in multiple places for config file
+  * Hidden directory in $HOME ($HOME/.cfconfig.yml)
+  * Non-hidden in current directory (/cfconfig.yml)
+  * In /etc/cfconfig.yml
+* Refactoring and new usage with --action push|pull|delete
+* Pulling files implemented
+* Deleting files implemented
+* Initial unit tests completed
+
 0.5.0 2009-04-18
 -----------------
 
