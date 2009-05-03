@@ -122,25 +122,29 @@ class CFBackup
     files = Dir.glob(glob_options)
     
     # Upload file(s)
+    counter = 1
+    show_verbose "There are #{files.length} files to process."
     files.each do |file|  
       file = file.sub(/\.\//, '')
       if file == "" || file[0,1] == "." || FileTest.directory?(file)
+        show_verbose "(#{counter}/#{files.length}) Skipping directory #{file}"
+        counter += 1
         next 
       end
       
-      show_verbose "Uploading #{file}...", false
+      show_verbose "(#{counter}/#{files.length}) Pushing file #{file}...", false
       
-      file_info = File.split(file.to_s)
       if @opts.options.remote_path.to_s == ''
-        remote_path = file_info[1]
+        remote_path = file
       else
-        remote_path = File.join(@opts.options.remote_path, file.to_s)
+        remote_path = File.join(@opts.options.remote_path, file)
       end
         
       object = @container.create_object(remote_path, true)
       object.load_from_filename(file)
       
       show_verbose " done."
+      counter += 1
     end # files.each
     
   end # push_files()
@@ -194,7 +198,7 @@ class CFBackup
         File.makedirs File.join(@opts.options.local_path.to_s, file_info[0]) # Create subdirectories as needed
       end
           
-      show_verbose "Pulling object (#{counter}/#{objects.length}) #{object.name}...", false
+      show_verbose "(#{counter}/#{objects.length}) Pulling object #{object.name}...", false
       object.save_to_filename(filepath)
       show_verbose " done"
       counter += 1
