@@ -52,7 +52,7 @@ Configuration
             --config_file PATH           Use specified config file, rather than the default
             --local_net                  Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)
             
-The wiki has some usage examples and some sample automation scripts can be found in the example_scripts directory.
+The wiki has usage examples and some sample automation scripts can be found in the example_scripts directory.
 
 Copyright
 ------------
