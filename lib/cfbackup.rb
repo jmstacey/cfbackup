@@ -113,23 +113,26 @@ class CFBackup
     prep_container
     
     path = @opts.options.local_path
-  
+    pwd  = Dir.getwd # Save current directory so we can come back
+    
     if FileTest::file?(path)
-      glob_options = File.join(File::dirname(path), File::basename(path))
+      glob_options = File.join(File::basename(path))
     elsif @opts.options.recursive
-      glob_options = File.join(path, "**", "*")
+      Dir.chdir(path)
+      glob_options = File.join("**", "*")
     else
-      glob_options = File.join(path, "*")
+      Dir.chdir(path)
+      glob_options = File.join("*")
     end
     files = Dir.glob(glob_options)
     
     # Upload file(s)
     counter = 1
     show_verbose "There are #{files.length} files to process."
-    files.each do |file|  
+    files.each do |file|
       file = file.sub(/\.\//, '')
       if file == "" || file[0,1] == "." || FileTest.directory?(file)
-        show_verbose "(#{counter}/#{files.length}) Skipping directory #{file}"
+        show_verbose "(#{counter}/#{files.length}) Skipping #{file}"
         counter += 1
         next 
       end
@@ -149,6 +152,8 @@ class CFBackup
       counter += 1
     end # files.each
     
+    Dir.chdir(pwd) # Go back to original directory
+    
   end # push_files()
   
   def pull_files
@@ -162,7 +167,11 @@ class CFBackup
     show_verbose "There are #{objects.length} objects to process."
     objects.each do |object_name|
       object = @container.object(object_name)
-      next unless (object.content_type != "application/directory")
+      if object.content_type == "application/directory"
+        show_verbose "(#{counter}/#{objects.length}) Pseudo directory #{object.name}"
+        counter += 1
+        next
+      end
       
       path_info = File.split(@opts.options.local_path.to_s)
       file_info = File.split(object.name.to_s)
@@ -211,6 +220,7 @@ class CFBackup
     prep_container(false)
     
     if object_file?
+      show_verbose "Deleting object #{@opts.options.remote_path.to_s}"
       @container.delete_object(@opts.options.remote_path.to_s)
     else
       if !@opts.options.recursive
@@ -222,7 +232,10 @@ class CFBackup
         counter = 1
         show_verbose "There are #{objects.length} objects to process."
         objects.each do |object_name|
+          show_verbose "(#{counter}/#{objects.length}) Deleting object #{object_name}...", false
           @container.delete_object(object_name)
+          show_verbose " done"
+          counter += 1
         end
       end
     end
