@@ -106,7 +106,7 @@ class CFBackup
     
     puts "Warning: 5GB maximum filesize"
     object = @container.create_object(@opts.options.remote_path, true)
-    object.write("STDIN")
+    object.write
   end # push_piped_data()
   
   def push_files
