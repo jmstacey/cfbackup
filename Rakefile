@@ -14,6 +14,9 @@ begin
     
     # Dependencies
     gem.add_dependency('rackspace-cloudfiles', '>=1.3.0.3')
+    
+    # Include Files
+    gem.files.include %w(lib/optcfbackup.rb)
 
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
