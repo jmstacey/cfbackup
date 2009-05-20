@@ -20,8 +20,8 @@ Requirements
 
 Notes: 
 * If you install CFBackup as a gem, all of the dependencies _should_ automatically be installed for you.
-* Ubuntu Users: The Ubuntu rubygems package will installs executables outside your normal PATH. You will
-  need to update it or create a symlink to access cfbackup from anywhere. See the wiki for more information.reating a symlink.
+* Ubuntu Users: The Ubuntu rubygems package will install executables outside your normal PATH. You will
+  need to update it or create a symlink to access cfbackup from anywhere. See the wiki for more information.
 
 Install
 -----------
