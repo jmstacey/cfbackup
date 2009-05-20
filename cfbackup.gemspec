@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
      "example_scripts/temp_directory.sh",
      "lib/OptCFBackup.rb",
      "lib/cfbackup.rb",
-     "lib/optcfbackup.rb",
      "temp/README",
      "test/cfbackup_test.rb",
      "test/cfconfig.yml",
