@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{cfbackup}
-  s.version = "0.6.1"
+  s.version = "0.7.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jon Stacey"]
@@ -26,8 +26,9 @@ Gem::Specification.new do |s|
      "conf/cfconfig.yml",
      "example_scripts/piped.sh",
      "example_scripts/temp_directory.sh",
-     "lib/OptCFBackup.rb",
      "lib/cfbackup.rb",
+     "lib/optcfbackup.rb",
+     "lib/optcfbackup.rb",
      "temp/README",
      "test/cfbackup_test.rb",
      "test/cfconfig.yml",
