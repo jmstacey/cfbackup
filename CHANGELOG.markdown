@@ -1,6 +1,11 @@
 CFBackup ChangeLog
 ==================
 
+0.6.1 2009-05-19
+-----------------
+* Use official Rackspace CloudFiles API from GitHub
+* Corrected case issue on case-sensitive filesystems
+
 0.6.0 2009-05-03
 -----------------
 * Added example_scripts to RDoc.
