@@ -1,6 +1,10 @@
 CFBackup ChangeLog
 ==================
 
+0.7.1 2009-05-19
+-----------------
+* Version bump and re-release of 0.6.1 because the published gem by GitHub was marked as 0.7.0.
+
 0.6.1 2009-05-19
 -----------------
 * Use official Rackspace CloudFiles API from GitHub
