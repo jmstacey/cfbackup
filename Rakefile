@@ -5,7 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "cfbackup"
-    gem.summary = %Q{TODO}
+    gem.summary = "A simple ruby program intended to serve as a useful tool for automated backups to Mosso Cloud Files."
+    gem.description = "A simple ruby program intended to serve as a useful tool for automated backups to Mosso Cloud Files."
     gem.email = "jon@jonsview.com"
     gem.homepage = "http://github.com/jmstacey/cfbackup"
     gem.authors = ["Jon Stacey"]
