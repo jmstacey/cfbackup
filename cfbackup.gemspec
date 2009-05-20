@@ -1,45 +1,54 @@
 Gem::Specification.new do |s|
   s.name = %q{cfbackup}
-  s.version = "0.6.0"
+  s.version = "0.6.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jon Stacey"]
-  s.date = %q{2009-05-03}
+  s.date = %q{2009-05-19}
   s.default_executable = %q{cfbackup}
+  s.description = %q{A simple ruby program intended to serve as a useful tool for automated backups to Mosso Cloud Files.}
   s.email = %q{jon@jonsview.com}
   s.executables = ["cfbackup"]
   s.extra_rdoc_files = [
     "LICENSE",
-    "README.markdown"
+     "README.markdown"
   ]
   s.files = [
-    "CHANGELOG.markdown",
-    "LICENSE",
-    "README.markdown",
-    "Rakefile",
-    "VERSION.yml",
-    "bin/cfbackup",
-    "lib/OptCFBackup.rb",
-    "lib/cfbackup.rb",
-    "test/cfbackup_test.rb",
-    "test/cfconfig.yml",
-    "test/data/data.txt",
-    "test/data/folder_1/file1.txt",
-    "test/data/folder_1/file2.txt",
-    "test/data/folder_1/folder_3/file1.txt",
-    "test/data/folder_2/file1.txt",
-    "test/data/folder_2/file2.txt",
-    "test/test_helper.rb"
+    ".gitignore",
+     "CHANGELOG.markdown",
+     "LICENSE",
+     "README.markdown",
+     "Rakefile",
+     "VERSION.yml",
+     "bin/cfbackup",
+     "cfbackup.gemspec",
+     "cfconfig.yml",
+     "conf/cfconfig.yml",
+     "example_scripts/piped.sh",
+     "example_scripts/temp_directory.sh",
+     "lib/OptCFBackup.rb",
+     "lib/cfbackup.rb",
+     "lib/optcfbackup.rb",
+     "temp/README",
+     "test/cfbackup_test.rb",
+     "test/cfconfig.yml",
+     "test/data/data.txt",
+     "test/data/folder_1/file1.txt",
+     "test/data/folder_1/file2.txt",
+     "test/data/folder_1/folder_3/file1.txt",
+     "test/data/folder_2/file1.txt",
+     "test/data/folder_2/file2.txt",
+     "test/test_helper.rb"
   ]
   s.has_rdoc = true
   s.homepage = %q{http://github.com/jmstacey/cfbackup}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.2.0}
-  s.summary = %q{TODO}
+  s.summary = %q{A simple ruby program intended to serve as a useful tool for automated backups to Mosso Cloud Files.}
   s.test_files = [
     "test/cfbackup_test.rb",
-    "test/test_helper.rb"
+     "test/test_helper.rb"
   ]
 
   if s.respond_to? :specification_version then
@@ -47,11 +56,11 @@ Gem::Specification.new do |s|
     s.specification_version = 2
 
     if current_version >= 3 then
-      s.add_runtime_dependency(%q<jmstacey-ruby-cloudfiles>, [">= 1.3.3"])
+      s.add_runtime_dependency(%q<rackspace-cloudfiles>, [">= 1.3.0.3"])
     else
-      s.add_dependency(%q<jmstacey-ruby-cloudfiles>, [">= 1.3.3"])
+      s.add_dependency(%q<rackspace-cloudfiles>, [">= 1.3.0.3"])
     end
   else
-    s.add_dependency(%q<jmstacey-ruby-cloudfiles>, [">= 1.3.3"])
+    s.add_dependency(%q<rackspace-cloudfiles>, [">= 1.3.0.3"])
   end
 end
