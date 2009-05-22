@@ -104,7 +104,7 @@ class CFBackup
   def push_piped_data
     prep_container
     
-    puts "Warning: 5GB maximum filesize"
+    puts "Note: Rackspace enforces a 5GB maximum filesize."
     object = @container.create_object(@opts.options.remote_path, true)
     object.write
   end # push_piped_data()
