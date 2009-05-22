@@ -1,6 +1,8 @@
-pkg
+*.sw?
+.DS_Store
+coverage
 rdoc
+pkg
 tmp
 test/tmp
 test/tmp/data
-.DS_Store
