@@ -41,7 +41,7 @@ CFBackup will look in the following places (in order) for the configuration file
 
 The configuration file can be overridden at any time with the --config_file option
 
-Configuration
+Usage
 -----------
 
     Usage: cfbackup.rb --action push|pull|delete options --container CONTAINER
