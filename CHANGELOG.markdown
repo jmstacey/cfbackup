@@ -1,6 +1,10 @@
 CFBackup ChangeLog
 ==================
 
+0.7.2 2009-??-??
+-----------------
+* Code documented.
+
 0.7.1 2009-05-19
 -----------------
 * Version bump and re-release of 0.6.1 because the published gem by GitHub was marked as 0.7.0.

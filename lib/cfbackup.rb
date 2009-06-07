@@ -22,6 +22,11 @@ require 'yaml'
 
 class CFBackup
   
+  # Implementation of initialize
+  #
+  # Prepares CFBackup object by calling options processor,
+  # loading configuration files, and preparing the connection
+  # to Mosso Cloud Files.
   def initialize(args)
     @opts = OptCFBackup.new(args)
 
@@ -50,6 +55,10 @@ class CFBackup
     
   end # initialize()
   
+  # Run CFBackup.
+  #
+  # This method will call the appropriate method based on
+  # the action given when CFBackup was called.
   def run
     
     show_error() unless (@opts.options.container != "")
@@ -74,6 +83,10 @@ class CFBackup
   
   private
   
+  # Prepare the connection to Mosso Cloud Files.
+  #
+  # Will attempt connectiong via the local network if 
+  # --local_net option was specified.
   def prep_connection
     # Establish connection
     show_verbose "Establishing connection...", false
@@ -85,7 +98,12 @@ class CFBackup
       @cf.storagehost = 'snet-storage.clouddrive.com'
     end
   end # prep_connection()
-    
+  
+  # Prepare the Cloud Files Container.
+  #
+  # Confirms the existence of the specified container
+  # and attempts to create it if possible. If container creation
+  # is disabled, an error will be thrown.
   def prep_container(create_container = true)
     # Check for the container. If it doesn't exist, create it if allowed
     if !@cf.container_exists?(@opts.options.container)
@@ -101,6 +119,9 @@ class CFBackup
     @container = @cf.container(@opts.options.container)
   end # prep_cnnection()
   
+  # Push piped data to the Cloud Files container.
+  #
+  # Pushes data piped from STDIN directly to the Cloud Files container.
   def push_piped_data
     prep_container
     
@@ -109,6 +130,12 @@ class CFBackup
     object.write
   end # push_piped_data()
   
+  # Push files to the Cloud Files container.
+  #
+  # Deterimes what files to upload and then sends them to the
+  # Cloud Files container one at a time. If the push is recursive
+  # pseudo directories will be used to mimic the filesystem layout
+  # in the Cloud Files container.
   def push_files
     prep_container
     
@@ -156,6 +183,12 @@ class CFBackup
     
   end # push_files()
   
+  # Pull files from Cloud Files container to local filesystem.
+  #
+  # This method will pull the given file or directory from 
+  # the Cloud Files container to the local filesystem. If recursion
+  # is enabled, the pseudo directory structure will also be duplicated
+  # on the local system.
   def pull_files
     prep_container(false)
     
@@ -218,6 +251,10 @@ class CFBackup
     end
   end # pull_files()
   
+  # Delete a given file from a Cloud Files container.
+  #
+  # This method will delete a single file or directory
+  # from the Cloud Files container.
   def delete_files
     prep_container(false)
     
@@ -244,9 +281,15 @@ class CFBackup
     
   end # delete_files()
   
+  ################################################
+  # Helper methods                               #
+  ################################################
   
-  # Helper methods below
-  
+  # Determines if the given object is a file.
+  #
+  # If the object is a file, true is returned. Otherwise,
+  # if the object is a directory false is returned and a warning is
+  # emitted if the recursive option was not specified.
   def object_file?
     
     file = false
@@ -266,6 +309,10 @@ class CFBackup
     return file
   end
   
+  # Get an array of objects to process from the container.
+  #
+  # Queries the Cloud Files container to compile and return an array
+  # of objects that need to be processed.
   def get_objects_array
     
     file = object_file?
@@ -284,7 +331,10 @@ class CFBackup
     return objects
   end
   
-  # Shows given message if verbose output is turned on
+  # Show given message if verbose output is turned on
+  #
+  # Used to display or hide messages based on the users verbosity
+  # preference.
   def show_verbose(message, line_break = true)
     unless !@opts.options.verbose
       if line_break
@@ -296,7 +346,11 @@ class CFBackup
     end
   end # show_verbose()
   
-  # Show error message, banner and exit
+  # Show error message, banner, and exit program.
+  #
+  # This is considered a critical error and the application
+  # terminated after printing the given error message and the
+  # usage banner for reference.
   def show_error(message = '')
     puts message
     puts @opts.banner

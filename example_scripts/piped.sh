@@ -1,11 +1,13 @@
 #!/bin/sh
 
-# In this example, data is piped directly from the backup to a Cloud Files
-# container, bypassing the intermediate temp directory step
+# piped.sh
 #
-# This is an example script that you could use in combination with CFBackup.
-# Modify it to suit your needs. Rename to file without an extension if you
-# are going to place in /etc/cron.daily.
+# This script demonstrates how CFBackup could be used to peform
+# automated backups. In this example, data is piped directly
+# to a Cloud Files container, bypassing the need for a temporary
+# holding directory.
+#
+# Modify it to suit your needs.
 
 CONTAINER=backups
 NOW=$(date +_%b_%d_%y)

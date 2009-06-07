@@ -1,13 +1,14 @@
 #!/bin/sh
 
-# In this example, backups are first created and placed in a temporary
-# holding directory. Then, the entire directory is uploaded to 
-# Cloud Files. Finally, the temp directory is cleared in preparation
-# for the next backup.
+# temp_directory.sh
 #
-# This is an example script that you could use in combination with CFBackup.
-# Modify it to suit your needs. Rename to file without an extension if you
-# are going to place in /etc/cron.daily.
+# This script demonstrates how CFBackup could be used to peform
+# automated backups. In this example, backups are first created 
+# and placed in a temporary holding directory. Then, the entire 
+# directory is uploaded to Cloud Files. Finally, the temp directory 
+# is cleared in preparation for the next scheduled backup.
+#
+# Modify it to suit your needs.
 
 cd ~/cfbackup/temp
 CONTAINER=backups

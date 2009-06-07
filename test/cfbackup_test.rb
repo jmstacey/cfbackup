@@ -1,8 +1,14 @@
+# Contains CFBackup unit tests.
+
 require 'test_helper'
 
+# CFBackup test class
 class CfbackupTest < Test::Unit::TestCase
-  TEST_DIR = 'test/tmp'
+  TEST_DIR = 'test/tmp' # Test directory
   
+  # Test uploading files.
+  # First a single file is uploaded, then a recursive directory
+  # push is performed.
   context "A backup" do
     
     context "with a single file push" do
@@ -29,6 +35,9 @@ class CfbackupTest < Test::Unit::TestCase
 
   end 
   
+  # Test restoring files.
+  # First attempts pulling a single file, then attempts a recursive
+  # directory pull. Cleans up afterwards.
   context "A restore" do
     
     context "with a single file pull" do
@@ -78,6 +87,9 @@ class CfbackupTest < Test::Unit::TestCase
     
   end
   
+  # Test deleting remote objects.
+  # First test deleting a single remote object representing a file,
+  # then delete a pseudo directory recursively.
   context "A deletion" do
     
     context "of a single file" do

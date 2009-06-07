@@ -1,14 +1,16 @@
+# Handle option parsing for use in CFBackup.
+
 require 'optparse'
 require 'ostruct'
 
+# Option parser class for CFBackup
 class OptCFBackup
   
-  # Options structure
-  attr_reader :options
-  
-  # Ussage message
-  attr_reader :banner
+  attr_reader :options # Options structure
+  attr_reader :banner  # Ussage message
 
+  # Implementation of initialize
+  #
   # Initializes object with command line arguments passed
   def initialize(args)
     
@@ -69,18 +71,17 @@ class OptCFBackup
       
     end
     
-    opts.parse!(args)
+    opts.parse!(args) # Parse arguments
     
   end # initialize()
   
   private
   
+  # Remove trailing slash from the remote path if present.
   def clean_remote_path
     if self.options.remote_path[0,1] == "/"
       self.options.remote_path.slice!(0)
     end
-    # Follwoig won't work for piped data. Might result in "text.txt/"
-    # self.options.remote_path = self.options.remote_path + "/" unless (self.options.remote_path[-1,1] == "/")
-  end
+  end # clean_remote_path()
   
 end # class OptCFBackup

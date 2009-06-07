@@ -1,2 +1,5 @@
+# CFBackup configuration file
+# Enter your Rackspace/Mosso Cloud Files API username and password.
+
 username: xxxxxxxxxxxxx
 api_key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

@@ -1,4 +1,10 @@
 #!/usr/bin/env ruby
+
+# This file will be installed in the bin directory, making cfbackup callable 
+# from anywhere on the command line.
+#
+# Instantiate a new CFBackup object and run.
+
 require 'rubygems'
 require 'cfbackup'
 
