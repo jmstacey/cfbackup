@@ -93,7 +93,7 @@ class CFBackup
     
     retry_count = 1
     begin
-      @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"]);
+      @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"], true, @opts.options.local_net);
     rescue AuthenticationException => e
       puts "Error: #{e.message}. Check your cfconfig.yml file."
       Process.exit
@@ -107,11 +107,6 @@ class CFBackup
         puts "Error: #{e.message}. Giving up!"
         Process.exit
       end
-    end
-    
-    # Special option for Slicehost customers in DFW datacenter
-    if @opts.options.local_net
-      @cf.storagehost = 'snet-storage.clouddrive.com'
     end
   end # prep_connection()
   
