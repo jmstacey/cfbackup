@@ -13,7 +13,7 @@ begin
     gem.authors = ["Jon Stacey"]
     
     # Dependencies
-    gem.add_dependency('cloudfiles', '>=1.4.4')
+    gem.add_dependency('rackspace-cloudfiles', '>=1.3.0.3')
     
     # Include Files
     gem.files.include %w(lib/optcfbackup.rb)
