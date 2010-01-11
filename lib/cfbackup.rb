@@ -147,7 +147,7 @@ class CFBackup
   end # push_piped_data()
   
   # Push single file to the Cloud Files container.
-  def push_file file
+  def push_file(file)
     if @opts.options.remote_path.to_s == ''
       remote_path = file
     else
