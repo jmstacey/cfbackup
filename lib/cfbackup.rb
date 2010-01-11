@@ -137,6 +137,18 @@ class CFBackup
     object.write
   end # push_piped_data()
   
+  # Push single file to the Cloud Files container.
+  def push_file file
+    if @opts.options.remote_path.to_s == ''
+      remote_path = file
+    else
+      remote_path = File.join(@opts.options.remote_path, file)
+    end
+    
+    object = @container.create_object(remote_path, true)
+    object.load_from_filename(file)
+  end
+  
   # Push files to the Cloud Files container.
   #
   # Deterimes what files to upload and then sends them to the
@@ -172,16 +184,7 @@ class CFBackup
       end
       
       show_verbose "(#{counter}/#{files.length}) Pushing file #{file}...", false
-      
-      if @opts.options.remote_path.to_s == ''
-        remote_path = file
-      else
-        remote_path = File.join(@opts.options.remote_path, file)
-      end
-        
-      object = @container.create_object(remote_path, true)
-      object.load_from_filename(file)
-      
+      push_file file
       show_verbose " done."
       counter += 1
     end # files.each
