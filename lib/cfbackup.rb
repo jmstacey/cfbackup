@@ -96,7 +96,7 @@ class CFBackup
       @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"]);
     rescue AuthenticationException => e
       puts "Error: #{e.message}. Check your cfconfig.yml file."
-      exit 1
+      Process.exit
     rescue ConnectionException => e
       if retry_count <= @opts.options.max_retries
         puts "Error: #{e.message}. Retrying (#{retry_count}/#{@opts.options.max_retries.to_s}) in 15 seconds..."
@@ -105,7 +105,7 @@ class CFBackup
         retry
       else
         puts "Error: #{e.message}. Giving up!"
-        exit 1
+        Process.exit
       end
     end
     
@@ -165,7 +165,7 @@ class CFBackup
         retry
       else
         puts "Error: #{e.message}. Giving up!"
-        exit 1
+        Process.exit
       end
     end
   end
