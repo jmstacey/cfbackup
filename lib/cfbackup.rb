@@ -90,8 +90,15 @@ class CFBackup
   def prep_connection
     # Establish connection
     show_verbose "Establishing connection...", false
-    @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"]);
-    show_verbose " done."
+    
+    begin
+      @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"]);
+    rescue => e
+      puts "Error: #{e.message}."
+    else
+      show_verbose " done."
+    end
+
     
     # Special option for Slicehost customers in DFW datacenter
     if @opts.options.local_net
