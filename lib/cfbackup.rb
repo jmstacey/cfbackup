@@ -145,8 +145,20 @@ class CFBackup
       remote_path = File.join(@opts.options.remote_path, file)
     end
     
-    object = @container.create_object(remote_path, true)
-    object.load_from_filename(file)
+    retry_count = 1
+    begin
+      object = @container.create_object(remote_path, true)
+      object.load_from_filename(file)
+    rescue Exception => e
+      if retry_count <= @opts.options.max_retries
+        puts "Error: #{e.message}. Retrying (#{retry_count}/#{@opts.options.max_retries.to_s})"
+        retry_count = retry_count + 1
+        retry
+      else
+        puts "Error: #{e.message}. Giving up!"
+        exit 1
+      end
+    end
   end
   
   # Push files to the Cloud Files container.
