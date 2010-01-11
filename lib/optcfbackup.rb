@@ -26,7 +26,7 @@ class OptCFBackup
     self.options.container    = ''
     self.options.local_path   = ''
     self.options.remote_path  = ''
-    self.options.verbose      = false;
+    self.options.verbose      = false
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
