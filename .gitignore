@@ -6,3 +6,4 @@ pkg
 tmp
 test/tmp
 test/tmp/data
+test/cfconfig.yml
