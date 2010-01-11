@@ -91,14 +91,23 @@ class CFBackup
     # Establish connection
     show_verbose "Establishing connection...", false
     
+    retry_count = 1
     begin
       @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"]);
-    rescue => e
-      puts "Error: #{e.message}."
-    else
-      show_verbose " done."
+    rescue AuthenticationException => e
+      puts "Error: #{e.message}. Check your cfconfig.yml file."
+      exit 1
+    rescue ConnectionException => e
+      if retry_count <= @opts.options.max_retries
+        puts "Error: #{e.message}. Retrying (#{retry_count}/#{@opts.options.max_retries.to_s}) in 15 seconds..."
+        retry_count = retry_count + 1
+        sleep 15
+        retry
+      else
+        puts "Error: #{e.message}. Giving up!"
+        exit 1
+      end
     end
-
     
     # Special option for Slicehost customers in DFW datacenter
     if @opts.options.local_net
