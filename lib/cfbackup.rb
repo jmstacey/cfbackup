@@ -160,7 +160,7 @@ class CFBackup
       object.load_from_filename(file)
     rescue Exception => e
       if retry_count <= @opts.options.max_retries
-        puts "Error: #{e.message}. Retrying (#{retry_count}/#{@opts.options.max_retries.to_s})"
+        puts "Error: #{e.message}. Retrying (#{retry_count}/#{@opts.options.max_retries.to_s})..."
         retry_count = retry_count + 1
         retry
       else
