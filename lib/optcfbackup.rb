@@ -27,6 +27,7 @@ class OptCFBackup
     self.options.local_path   = ''
     self.options.remote_path  = ''
     self.options.verbose      = false
+    self.options.max_retries  = 3
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
@@ -67,6 +68,10 @@ class OptCFBackup
       
       opts.on("--local_net", "Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)") do |local_net|
         self.options.local_net = local_net
+      end
+      
+      opts.on("--max_retries", "Change the number of times to retry an operation before giving up.") do |config|
+        self.options.max_retries = max_retries
       end
       
     end
