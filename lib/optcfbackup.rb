@@ -17,19 +17,19 @@ class OptCFBackup
     @banner = "Usage: cfbackup.rb --action push|pull|delete options --container CONTAINER"
     
     @options = OpenStruct.new
-    self.options.config       = ["#{ENV['HOME']}/.cfconfig.yml", './cfconfig.yml', '/etc/cfconfig.yml']
-    self.options.action       = ''
-    self.options.pipe_data    = false
-    self.options.show_ver     = false
-    self.options.recursive    = false
-    self.options.local_net    = false
-    self.options.container    = ''
-    self.options.local_path   = ''
-    self.options.remote_path  = ''
-    self.options.verbose      = false
-    self.options.max_retries  = 3
-    self.options.ignore_errors= false
-    self.options.error_log    = "./cfbackup_error.log"
+    self.options.config        = ["#{ENV['HOME']}/.cfconfig.yml", './cfconfig.yml', '/etc/cfconfig.yml']
+    self.options.action        = ''
+    self.options.pipe_data     = false
+    self.options.show_ver      = false
+    self.options.recursive     = false
+    self.options.local_net     = false
+    self.options.container     = ''
+    self.options.local_path    = ''
+    self.options.remote_path   = ''
+    self.options.verbose       = false
+    self.options.max_retries   = 3
+    self.options.ignore_errors = false
+    self.options.error_log     = "./cfbackup_error.log"
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
