@@ -28,6 +28,8 @@ class OptCFBackup
     self.options.remote_path  = ''
     self.options.verbose      = false
     self.options.max_retries  = 3
+    self.options.ignore_errors= false
+    self.options.error_log    = "./cfbackup_error.log"
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
@@ -72,6 +74,14 @@ class OptCFBackup
       
       opts.on("--max_retries", "Change the number of times to retry an operation before giving up.") do |config|
         self.options.max_retries = max_retries
+      end
+      
+      opts.on("--ignore_errors", "Ignore file operation errors and continue processing other files. More information will be written to the error log.") do |ignore_errors|
+        self.options.ignore_errors = ignore_errors
+      end
+      
+      opts.on("--error_log", "Change the output location of the error file if the --skip_failures option is set") do |error_log|
+        self.options.error_log = error_log
       end
       
     end
