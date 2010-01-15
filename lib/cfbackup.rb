@@ -379,4 +379,22 @@ class CFBackup
     exit
   end # show_error()
   
+  # Prepare error log file for writing
+  #
+  # The log file is created if necessary and the current date and time are
+  # written to indicate a new set of operations. The log is never overwritten
+  # or truncated except by user.
+  def prep_error_log_file
+    header = "\n\nFile operations initiated #{Time.now}"
+    File.open(@opts.options.error_log, 'a+') { |f| f.write(header) }
+  end
+  
+  # Append given error message to the error log
+  #
+  # Log entries will be in the format "filepath:exception message"
+  def write_error_to_log(message, exception)
+    output = "#{message}:#{exception.message}"
+    File.open(@opts.options.error_log, 'a') {|f| f.write(output) }
+  end
+  
 end # class CFBackup
