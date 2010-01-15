@@ -364,7 +364,7 @@ class CFBackup
   # preference.
   def show_verbose(message, line_break = true)
     if @opts.options.verbose
-      line_break ? puts message : print message
+      line_break ? puts(message) : print(message)
     end
     @stdout.flush
   end # show_verbose()
