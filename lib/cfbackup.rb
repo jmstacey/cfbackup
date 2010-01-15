@@ -362,14 +362,10 @@ class CFBackup
   # Used to display or hide messages based on the users verbosity
   # preference.
   def show_verbose(message, line_break = true)
-    unless !@opts.options.verbose
-      if line_break
-        puts message
-      else
-        print message
-      end
-      $stdout.flush
+    if @opts.options.verbose
+      line_break ? puts message : print message
     end
+    @stdout.flush
   end # show_verbose()
   
   # Show error message, banner, and exit program.
