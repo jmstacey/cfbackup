@@ -76,11 +76,11 @@ class OptCFBackup
         self.options.max_retries = max_retries
       end
       
-      opts.on("--ignore_errors", "Ignore file operation errors and continue processing other files. More information will be written to the error log.") do |ignore_errors|
+      opts.on("--ignore_errors", "Ignore file operation errors (push only) and continue processing other files.") do |ignore_errors|
         self.options.ignore_errors = ignore_errors
       end
       
-      opts.on("--error_log", "Change the output location of the error file if the --skip_failures option is set") do |error_log|
+      opts.on("--error_log FILEPATH", "Create an error log at the given filepath containing a listing of failed push operations.") do |error_log|
         self.options.error_log = error_log
       end
       
