@@ -52,6 +52,7 @@ class CFBackup
     show_error('Error: Unable to locate config file.') unless (@conf != nil)
     
     prep_connection
+    prep_error_log_file unless !@opts.options.error_log
     
   end # initialize()
   
