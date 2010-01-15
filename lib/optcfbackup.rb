@@ -72,7 +72,7 @@ class OptCFBackup
         self.options.local_net = local_net
       end
       
-      opts.on("--max_retries", "Change the number of times to retry an operation before giving up.") do |config|
+      opts.on("--max_retries COUNT", "Change the number of times to retry an operation before giving up.") do |config|
         self.options.max_retries = max_retries
       end
       
