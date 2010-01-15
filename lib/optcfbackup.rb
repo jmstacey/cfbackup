@@ -29,7 +29,7 @@ class OptCFBackup
     self.options.verbose       = false
     self.options.max_retries   = 3
     self.options.ignore_errors = false
-    self.options.error_log     = "./cfbackup_error.log"
+    self.options.error_log     = false
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
