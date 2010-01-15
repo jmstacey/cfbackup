@@ -160,8 +160,11 @@ class CFBackup
         retry_count = retry_count + 1
         retry
       else
-        puts "Error: #{e.message}. Giving up!"
-        Process.exit
+        write_error_to_log(file, e) unless !@opts.options.error_log
+        unless @opts.options.ignore_errors
+          puts "Error: #{e.message}. Giving up!"
+          Process.exit
+        end
       end
     end
   end
