@@ -6,6 +6,22 @@ require 'test_helper'
 class CfbackupTest < Test::Unit::TestCase
   TEST_DIR = 'test/tmp' # Test directory
   
+  # Test --error_log option
+  context "A backup with the --error_log option enabled" do
+    setup do
+      mock_ARGV = ['--action', 'push', '--local_path', 'test/data/data.txt', '--container', 'test', '--config_file', 'test/cfconfig.yml', '-v', '--error_log', 'error.log']
+      backup = CFBackup.new(mock_ARGV)
+    end
+    
+    should "result in a log file being created" do
+      assert_equal true, File.exists?('error.log')
+    end
+    
+    teardown do
+      File.delete('error.log')
+    end
+  end
+  
   # Test connections
   context "A connection" do
     
@@ -13,7 +29,7 @@ class CfbackupTest < Test::Unit::TestCase
       should "should be retried 3 times and then exit" do
         CloudFiles::Connection.expects(:new).times(4).raises(ConnectionException)
         # We expect 4 calls (1 initial + 3 retries)
-
+  
         assert_raises(SystemExit) do
           mock_ARGV = ['--action', 'push', '--local_path', 'test/data/data.txt', '--container', 'test', '--config_file', 'test/cfconfig.yml', '-v']
           CFBackup.new(mock_ARGV)
@@ -49,7 +65,7 @@ class CfbackupTest < Test::Unit::TestCase
         assert @backup.run
       end
     end
-
+  
   end 
   
   # Test restoring files.
