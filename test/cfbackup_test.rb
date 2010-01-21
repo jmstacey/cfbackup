@@ -6,6 +6,23 @@ require 'test_helper'
 class CfbackupTest < Test::Unit::TestCase
   TEST_DIR = 'test/tmp' # Test directory
   
+  # Test connections
+  context "A connection" do
+    
+    context "that fails with a ConnectionException and the default number of retries" do
+      should "should be retried 3 times and then exit" do
+        CloudFiles::Connection.expects(:new).times(4).raises(ConnectionException)
+        # We expect 4 calls (1 initial + 3 retries)
+
+        assert_raises(SystemExit) do
+          mock_ARGV = ['--action', 'push', '--local_path', 'test/data/data.txt', '--container', 'test', '--config_file', 'test/cfconfig.yml', '-v']
+          CFBackup.new(mock_ARGV)
+        end
+      end
+    end # context "that fails with a ConnectionException..."
+    
+  end
+  
   # Test uploading files.
   # First a single file is uploaded, then a recursive directory
   # push is performed.
