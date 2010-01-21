@@ -5,7 +5,6 @@ CFBackup ChangeLog
 -----------------
 * Code documented
 * Gem deployed on gemcutter
-Work sponsored by Shaun Brazier:
 * Cloudfiles API dependency updated to 1.4.4
 * Basic exception handling and retry mechanisms
 * New --max_retries option
@@ -13,6 +12,8 @@ Work sponsored by Shaun Brazier:
   * File push errors can now be ignored
 * New --error_log option
   * File push errors can be written to a log for later processing
+  
+This release sponsored by Shaun Brazier.
 
 0.7.1 2009-05-19
 -----------------
