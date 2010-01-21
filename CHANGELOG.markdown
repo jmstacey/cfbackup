@@ -1,7 +1,7 @@
 CFBackup ChangeLog
 ==================
 
-0.8.0 2010-??-??
+0.8.0 2010-01-20
 -----------------
 * Code documented
 * Gem deployed on gemcutter
