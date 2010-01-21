@@ -5,7 +5,7 @@ CFBackup ChangeLog
 -----------------
 * Code documented
 * Gem deployed on gemcutter
-Work sponsored by Shaun Brazier
+Work sponsored by Shaun Brazier:
 * Cloudfiles API dependency updated to 1.4.4
 * Basic exception handling and retry mechanisms
 * New --max_retries option
