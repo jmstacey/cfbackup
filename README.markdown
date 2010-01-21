@@ -16,7 +16,7 @@ Features
 Requirements
 --------------
 
-* ruby-cloudfiles
+* cloudfiles >= 1.4.4
 
 Notes: 
 * If you install CFBackup as a gem, all of the dependencies _should_ automatically be installed for you.
@@ -26,8 +26,8 @@ Notes:
 Install
 -----------
 
-* gem sources -a http://gems.github.com
-* sudo gem install jmstacey-cfbackup
+* gem sources -a http://gemcutter.org
+* sudo gem install cfbackup
 
 Configuration
 -----------
@@ -54,6 +54,9 @@ Usage
             --version                    Show current version
             --config_file PATH           Use specified config file, rather than the default
             --local_net                  Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)
+            --max_retries COUNT          Change the number of times to retry an operation before giving up
+            --ignore_errors              Ignore file operation errors (push only) and continue processing other files
+            --error_log FILEPATH         Create an error log at the given filepath containing a listing of failed push operations
             
 The wiki has usage examples and some sample automation scripts can be found in the example_scripts directory.
 
