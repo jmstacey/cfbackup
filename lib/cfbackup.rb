@@ -389,7 +389,7 @@ class CFBackup
   # written to indicate a new set of operations. The log is never overwritten
   # or truncated except by user.
   def prep_error_log_file
-    header = "\n\nFile operations initiated #{Time.now}"
+    header = "\n\nFile operations initiated #{Time.now}\n------------------"
     File.open(@opts.options.error_log, 'a+') { |f| f.write(header) }
   end
   
