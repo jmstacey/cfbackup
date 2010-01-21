@@ -17,16 +17,19 @@ class OptCFBackup
     @banner = "Usage: cfbackup.rb --action push|pull|delete options --container CONTAINER"
     
     @options = OpenStruct.new
-    self.options.config       = ["#{ENV['HOME']}/.cfconfig.yml", './cfconfig.yml', '/etc/cfconfig.yml']
-    self.options.action       = ''
-    self.options.pipe_data    = false
-    self.options.show_ver     = false
-    self.options.recursive    = false
-    self.options.local_net    = false
-    self.options.container    = ''
-    self.options.local_path   = ''
-    self.options.remote_path  = ''
-    self.options.verbose      = false;
+    self.options.config        = ["#{ENV['HOME']}/.cfconfig.yml", './cfconfig.yml', '/etc/cfconfig.yml']
+    self.options.action        = ''
+    self.options.pipe_data     = false
+    self.options.show_ver      = false
+    self.options.recursive     = false
+    self.options.local_net     = false
+    self.options.container     = ''
+    self.options.local_path    = ''
+    self.options.remote_path   = ''
+    self.options.verbose       = false
+    self.options.max_retries   = 3
+    self.options.ignore_errors = false
+    self.options.error_log     = false
     
     opts = OptionParser.new do |opts|
       opts.banner = self.banner
@@ -67,6 +70,18 @@ class OptCFBackup
       
       opts.on("--local_net", "Use unmetered connection in DFW1 (only applicable to Slicehost or Mosso Cloud Server customers)") do |local_net|
         self.options.local_net = local_net
+      end
+      
+      opts.on("--max_retries COUNT", "Change the number of times to retry an operation before giving up.") do |config|
+        self.options.max_retries = max_retries
+      end
+      
+      opts.on("--ignore_errors", "Ignore file operation errors (push only) and continue processing other files.") do |ignore_errors|
+        self.options.ignore_errors = ignore_errors
+      end
+      
+      opts.on("--error_log FILEPATH", "Create an error log at the given filepath containing a listing of failed push operations.") do |error_log|
+        self.options.error_log = error_log
       end
       
     end

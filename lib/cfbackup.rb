@@ -52,6 +52,7 @@ class CFBackup
     show_error('Error: Unable to locate config file.') unless (@conf != nil)
     
     prep_connection
+    prep_error_log_file unless !@opts.options.error_log
     
   end # initialize()
   
@@ -90,12 +91,23 @@ class CFBackup
   def prep_connection
     # Establish connection
     show_verbose "Establishing connection...", false
-    @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"]);
-    show_verbose " done."
     
-    # Special option for Slicehost customers in DFW datacenter
-    if @opts.options.local_net
-      @cf.storagehost = 'snet-storage.clouddrive.com'
+    retry_count = 1
+    begin
+      @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"], true, @opts.options.local_net)
+    rescue AuthenticationException => e
+      puts "Error: #{e.message}. Check your cfconfig.yml file."
+      Process.exit
+    rescue ConnectionException => e
+      if retry_count <= @opts.options.max_retries
+        puts "Error: #{e.message}. Retrying (#{retry_count}/#{@opts.options.max_retries.to_s}) in 15 seconds..."
+        retry_count = retry_count + 1
+        sleep 15
+        retry
+      else
+        puts "Error: #{e.message}. Giving up!"
+        Process.exit
+      end
     end
   end # prep_connection()
   
@@ -129,6 +141,33 @@ class CFBackup
     object = @container.create_object(@opts.options.remote_path, true)
     object.write
   end # push_piped_data()
+  
+  # Push single file to the Cloud Files container.
+  def push_file(file)
+    if @opts.options.remote_path.to_s == ''
+      remote_path = file
+    else
+      remote_path = File.join(@opts.options.remote_path, file)
+    end
+    
+    retry_count = 1
+    begin
+      object = @container.create_object(remote_path, true)
+      object.load_from_filename(file)
+    rescue Exception => e
+      if retry_count <= @opts.options.max_retries
+        puts "Error: #{e.message}. Retrying (#{retry_count}/#{@opts.options.max_retries.to_s})..."
+        retry_count = retry_count + 1
+        retry
+      else
+        write_error_to_log(file, e) unless !@opts.options.error_log
+        unless @opts.options.ignore_errors
+          puts "Error: #{e.message}. Giving up!"
+          Process.exit
+        end
+      end
+    end
+  end
   
   # Push files to the Cloud Files container.
   #
@@ -165,16 +204,7 @@ class CFBackup
       end
       
       show_verbose "(#{counter}/#{files.length}) Pushing file #{file}...", false
-      
-      if @opts.options.remote_path.to_s == ''
-        remote_path = file
-      else
-        remote_path = File.join(@opts.options.remote_path, file)
-      end
-        
-      object = @container.create_object(remote_path, true)
-      object.load_from_filename(file)
-      
+      push_file file
       show_verbose " done."
       counter += 1
     end # files.each
@@ -336,14 +366,10 @@ class CFBackup
   # Used to display or hide messages based on the users verbosity
   # preference.
   def show_verbose(message, line_break = true)
-    unless !@opts.options.verbose
-      if line_break
-        puts message
-      else
-        print message
-      end
-      $stdout.flush
+    if @opts.options.verbose
+      line_break ? puts(message) : print(message)
     end
+    $stdout.flush
   end # show_verbose()
   
   # Show error message, banner, and exit program.
@@ -356,5 +382,23 @@ class CFBackup
     puts @opts.banner
     exit
   end # show_error()
+  
+  # Prepare error log file for writing
+  #
+  # The log file is created if necessary and the current date and time are
+  # written to indicate a new set of operations. The log is never overwritten
+  # or truncated except by user.
+  def prep_error_log_file
+    header = "\n\nFile operations initiated #{Time.now}\n------------------"
+    File.open(@opts.options.error_log, 'a+') { |f| f.write(header) }
+  end
+  
+  # Append given error message to the error log
+  #
+  # Log entries will be in the format "filepath:exception message"
+  def write_error_to_log(message, exception)
+    output = "#{message}:#{exception.message}"
+    File.open(@opts.options.error_log, 'a') {|f| f.write(output) }
+  end
   
 end # class CFBackup
