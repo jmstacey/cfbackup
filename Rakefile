@@ -2,27 +2,28 @@ require 'rake'
 
 $LOAD_PATH.unshift('lib')
 
-begin
-  require 'jeweler'
-  Jeweler::Tasks.new do |gem|
-    gem.name = "cfbackup"
-    gem.summary = "A simple ruby program intended to serve as a useful tool for automated backups to Mosso Cloud Files."
-    gem.description = "A simple ruby program intended to serve as a useful tool for automated backups to Mosso Cloud Files."
-    gem.email = "jon@jonsview.com"
-    gem.homepage = "http://github.com/jmstacey/cfbackup"
-    gem.authors = ["Jon Stacey"]
-    
-    # Dependencies
-    gem.add_dependency('cloudfiles', '>=1.4.4')
-    
-    # Include Files
-    gem.files.include %w(lib/optcfbackup.rb)
-
-    # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
-  end
-rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+require 'jeweler'
+Jeweler::Tasks.new do |gem|
+  gem.name = "cfbackup"
+  gem.summary = "A simple ruby program intended to serve as a useful tool for automated backups to Mosso Cloud Files."
+  gem.description = "A simple ruby program intended to serve as a useful tool for automated backups to Mosso Cloud Files."
+  gem.email = "jon@jonsview.com"
+  gem.homepage = "http://github.com/jmstacey/cfbackup"
+  gem.authors = ["Jon Stacey"]
+  
+  # Dependencies
+  gem.add_dependency "cloudfiles", ">=1.4.4"
+  gem.add_dependency "gemcutter", ">= 0.1.0"
+  
+  # Development Dependencies
+  gem.add_development_dependency "shoulda"
+  gem.add_development_dependency "mocha"
+  
+  # Include Files
+  gem.files.include %w(lib/optcfbackup.rb)
 end
+
+Jeweler::GemcutterTasks.new
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
