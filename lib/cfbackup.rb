@@ -369,7 +369,7 @@ class CFBackup
     if @opts.options.verbose
       line_break ? puts(message) : print(message)
     end
-    @stdout.flush
+    $stdout.flush
   end # show_verbose()
   
   # Show error message, banner, and exit program.
