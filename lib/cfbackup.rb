@@ -94,7 +94,7 @@ class CFBackup
     
     retry_count = 1
     begin
-      @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"], true, @opts.options.local_net);
+      @cf = CloudFiles::Connection.new(@conf["username"], @conf["api_key"], true, @opts.options.local_net)
     rescue AuthenticationException => e
       puts "Error: #{e.message}. Check your cfconfig.yml file."
       Process.exit
