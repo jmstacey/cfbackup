@@ -145,7 +145,9 @@ class CFBackup
   # Push single file to the Cloud Files container.
   def push_file(file)
     if @opts.options.remote_path.to_s == ''
-      remote_path = file
+      if FileTest::file?(file)
+        remote_path = File.join(File::basename(file)) # We don't want to be storing the path
+      end
     else
       remote_path = File.join(@opts.options.remote_path, file)
     end
@@ -182,7 +184,7 @@ class CFBackup
     pwd  = Dir.getwd # Save current directory so we can come back
     
     if FileTest::file?(path)
-      glob_options = File.join(File::basename(path))
+      glob_options = path
     elsif @opts.options.recursive
       Dir.chdir(path)
       glob_options = File.join("**", "*")
