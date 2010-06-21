@@ -179,40 +179,40 @@ class CFBackup
   # in the Cloud Files container.
   def push_files
     prep_container
+    @opts.options.local_path.each { |path|
+      path = File::expand_path(path) 
+      pwd  = Dir.getwd # Save current directory so we can come back
     
-    path = @opts.options.local_path
-    pwd  = Dir.getwd # Save current directory so we can come back
-    
-    if FileTest::file?(path)
-      glob_options = path
-    elsif @opts.options.recursive
-      Dir.chdir(path)
-      glob_options = File.join("**", "*")
-    else
-      Dir.chdir(path)
-      glob_options = File.join("*")
-    end
-    files = Dir.glob(glob_options)
-    
-    # Upload file(s)
-    counter = 1
-    show_verbose "There are #{files.length} files to process."
-    files.each do |file|
-      file = file.sub(/\.\//, '')
-      if file == "" || file[0,1] == "." || FileTest.directory?(file)
-        show_verbose "(#{counter}/#{files.length}) Skipping #{file}"
-        counter += 1
-        next 
+      if FileTest::file?(path)
+        glob_options = path
+      elsif @opts.options.recursive
+        Dir.chdir(path)
+        glob_options = File.join("**", "*")
+      else
+        Dir.chdir(path)
+        glob_options = File.join("*")
       end
+      files = Dir.glob(glob_options)
+    
+      # Upload file(s)
+      counter = 1
+      show_verbose "There are #{files.length} files to process."
+      files.each do |file|
+        file = file.sub(/\.\//, '')
+        if file == "" || file[0,1] == "." || FileTest.directory?(file)
+          show_verbose "(#{counter}/#{files.length}) Skipping #{file}"
+          counter += 1
+          next 
+        end
       
-      show_verbose "(#{counter}/#{files.length}) Pushing file #{file}...", false
-      push_file file
-      show_verbose " done."
-      counter += 1
-    end # files.each
+        show_verbose "(#{counter}/#{files.length}) Pushing file #{file}...", false
+        push_file file
+        show_verbose " done."
+        counter += 1
+      end # files.each
     
-    Dir.chdir(pwd) # Go back to original directory
-    
+      Dir.chdir(pwd) # Go back to original directory
+    }
   end # push_files()
   
   # Pull files from Cloud Files container to local filesystem.

@@ -50,7 +50,7 @@ class OptCFBackup
         self.options.verbose = verbose
       end
       
-      opts.on("--local_path LOCAL_PATH", "Local path or file") do |local_path|
+      opts.on("--local_path LOCAL_PATH", Array, "Local paths or files") do |local_path|
         self.options.local_path = local_path
       end
       
