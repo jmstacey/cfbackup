@@ -82,7 +82,7 @@ class CfbackupTest < Test::Unit::TestCase
         @backup = CFBackup.new(mock_ARGV)
       end
   
-      should "return true when file succesfully pulled" do
+      should "return true and cause the file to exist" do
         assert @backup.run
       end
   
@@ -97,6 +97,26 @@ class CfbackupTest < Test::Unit::TestCase
       teardown do
         assert File.delete(filepath)
       end
+    end
+    
+    context "with a single file pull not in CWD [Bug #17]" do
+      file     = 'folder_1/folder_3/file1.txt';
+      filepath = File.join(TEST_DIR, File::basename(file))
+      
+      setup do
+        mock_ARGV = ['--action', 'pull', '--container', "test:#{file}", '--local_path', "#{filepath}", '--config_file', 'test/cfconfig.yml', '-v']
+        @backup = CFBackup.new(mock_ARGV)
+      end
+      
+      should "return true and cause the file to exist" do
+        assert @backup.run
+        assert File.exist?(filepath)
+      end
+      
+      teardown do
+        assert File.delete(filepath)
+      end
+      
     end
     
     context "with a recursive pull" do    
