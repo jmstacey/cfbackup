@@ -84,15 +84,8 @@ class CfbackupTest < Test::Unit::TestCase
   
       should "return true and cause the file to exist" do
         assert @backup.run
+        assert File.exist?(filepath)
       end
-  
-      # I don't know why this doesn't work. It's like File is caching results
-      # and not updating until the applicaiton exists. Overcoming by
-      # asserting the file deletion during teardown at the loss of shoulda
-      #
-      # should "result in test/tmp/#{file} existing" do      
-      #   assert File.exist?(filepath)
-      # end
   
       teardown do
         assert File.delete(filepath)
