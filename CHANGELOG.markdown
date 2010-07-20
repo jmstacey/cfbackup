@@ -1,6 +1,10 @@
 CFBackup ChangeLog
 ==================
 
+0.8.1 2010-0719
+-----------------
+* Bugfix: Files not in working directory can't be uploaded [bug #17] props kaerast
+
 0.8.0 2010-01-20
 -----------------
 * Code documented
