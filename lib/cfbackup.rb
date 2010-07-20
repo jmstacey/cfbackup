@@ -182,7 +182,8 @@ class CFBackup
     pwd  = Dir.getwd # Save current directory so we can come back
     
     if FileTest::file?(path)
-      glob_options = File.join(File::basename(path))
+      Dir.chdir(File.dirname(path))
+      glob_options = File.basename(path)
     elsif @opts.options.recursive
       Dir.chdir(path)
       glob_options = File.join("**", "*")
