@@ -2,6 +2,10 @@
 
 require 'test_helper'
 
+# todo: finish bug 17 tests
+# Assert everything by creating a Cloudfiles object and verifying file
+# integrity
+
 # CFBackup test class
 class CfbackupTest < Test::Unit::TestCase
   TEST_DIR = 'test/tmp' # Test directory
@@ -53,6 +57,25 @@ class CfbackupTest < Test::Unit::TestCase
       should "return true when file sucessfully sent" do
         assert @backup.run
       end
+    end
+    
+    context "with a single file push not in CWD [Bug #17]" do
+      setup do
+        File.copy('test/data/cwd_bug_17/bug_17.txt', '/tmp/cfbackup_bug_17.txt')
+        assert File.exist?('/tmp/cfbackup_bug_17.txt')
+        
+        mock_ARGV = ['--action', 'push', '--local_path', '/tmp/cfbackup_bug_17.txt', '--container', 'test', '--config_file', 'test/cfconfig.yml', '-v']
+        @backup = CFBackup.new(mock_ARGV)
+      end
+
+      should "return true when file sucessfully sent" do
+        assert @backup.run
+      end
+      
+      # should "result in file being pushed" do
+      #   # Assert file uploaded
+      # end
+      
     end
     
     context "with a recursive directory push" do
