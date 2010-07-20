@@ -1,0 +1,5 @@
+Test file
+for
+bug #17:
+
+Single file pushes of files outside of the CWD don't work
